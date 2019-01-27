@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sushiyu.smartshot">
+    <!--为了获得ble权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+    <application
+        android:versionCode="2"
+        android:versionName="1.0.0"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".VedioShot"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_vedio_shot"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VedioShot_yuntai"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_vedio_shot"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ABpoint"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_abpoint"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <service
+            android:name=".BluetoothLeService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".DelayShot"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_delay_shot"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".DelayShot_yuntai"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_delay_shot"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".PanoramicShoot_yuntai"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_panromic_shoot"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".CustomMode_yuntai"
+            android:configChanges="locale|keyboard|orientation"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_custommode_shoot"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+    </application>
+
+</manifest>

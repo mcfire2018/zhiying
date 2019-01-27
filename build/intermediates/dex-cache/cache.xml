@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/sushiyu/work/android_app/new/mcfire2018/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/sushiyu/work/android_app/new/mcfire2018/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_9cdd34693a770ff07eec8a8e0c7707db8ea8b027/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/sushiyu/work/android_app/new/mcfire2018/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="f97cc4be702ef468362f762d42c898fb160dcb99">
+        <dex dex="/Users/sushiyu/work/android_app/new/mcfire2018/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e3f73e97349e6a211411f77b64979001bc5a5e05/classes.dex" />
+    </item>
+
+</items>

@@ -1,0 +1,13 @@
+import math
+def quadratic(a,b,c):
+	if a == 0:
+		raise TypeError('a can not be 0')
+	if not isinstance(a,(int,float)) or not isinstance(b,(int,float)) or not isinstance(c,(int,float)):
+		raise TypeError('Bad operand type')
+	delta = math.pow(b,2) - 4*a*c
+	if delta < 0:
+		return 'not root'
+	x1=(math.sqrt(delta)-b)/(2*a)
+	x2=-(math.sqrt(delta)+b)/(2*a)
+	return x1,x2
+print(quadratic(20,-29,-112))

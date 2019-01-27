@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">SmartShot</string>
+    <string name="abpoint_notification_left">
+        按住左或右按钮移动滑轨到最左边，按确认键确定滑轨A的位置</string>
+    <string name="abpoint_notification_right">
+        按住左或右按钮移动滑轨到最右边，按确认键确定滑轨B的位置</string>
+    <string name="abpoint_notification_error">
+        AB点设置失败，请点击重置按钮重新设置AB点</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_slider">滑轨控制</string>
+    <string name="action_delay_shot">延时拍摄</string>
+
+    <string name="title_activity_abpoint">AB点设置</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+    <string name="a_point_setting">A点设置</string>
+    <string name="b_point_setting">B点设置</string>
+    <!-- Menu items -->
+    <string name="delayshot_interval">逐格时间</string>
+    <string name="panoramic_shoot_times">时间</string>
+    <string name="delayshot_hour">:</string>
+    <string name="delayshot_minute">:</string>
+    <string name="delayshot_dingdian">定点拍摄</string>
+    <string name="delayshot_shot_time">拍摄时长</string>
+    <string name="delayshot_shot_time_default">00:00:00</string>
+    <string name="delayshot_shot_remain">实拍张数</string>
+    <string name="delayshot_shot_remain_default">100</string>
+    <string name="delayshot_second"></string>
+    <string name="delayshot_shottime_total">拍摄张数</string>
+    <string name="delayshot_baoguang_time">曝光时间</string>
+    <string name="delayshot_left">左</string>
+    <string name="delayshot_right">右</string>
+    <string name="delayshot_stop">停止</string>
+    <string name="delayshot_shot_time_last">拍摄时长</string>
+    <string name="delayshot_shottime_cnt">拍摄次数</string>
+    <string name="title_activity_vedio_shot">视频拍摄</string>
+    <string name="exit_app">退出</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_vedio__shot">Vedio_Shot</string>
+    <string name="title_activity_delay_shot">延时拍摄</string>
+    <string name="title_activity_panromic_shoot">全景拍摄</string>
+    <string name="title_activity_custommode_shoot">自定义拍摄</string>
+    <string name="language">语言</string>
+    <string name="Reverse">自动往返</string>
+    <string name="Manual">单拍</string>
+    <string name="Speed">当前速度</string>
+    <string name="jiaodu">角度</string>
+    <string name="Close">关</string>
+    <string name="Open">开</string>
+    <string name="Contact">联系我们</string>
+    <string name="software_upgrade">软件升级</string>
+    <string name="support">技术支持：596400303@qq.com</string>
+    <string name="abpoint_reset">重置</string>
+    <string name="soft_update_no">soft_update_no</string>
+    <string name="soft_update_title">soft_update_title</string>
+    <string name="soft_update_info">soft_update_info</string>
+    <string name="soft_update_later">soft_update_later</string>
+    <string name="soft_update_updatebtn">soft_update_updatebtn</string>
+    <string name="soft_updating">soft_updating</string>
+    <string name="softupdate_progress">softupdate_progress</string>
+    <string name="soft_update_cancel">soft_update_cancel</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="Connecting">正在连接......</string>
+    <string name="Connected">连接成功</string>
+    <string name="NoConnecting">未建立连接</string>
+    <string name="Scan">扫描</string>
+    <string name="Scanning">正扫描设备...</string>
+
+
+
+</resources>

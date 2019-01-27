@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/scan"
+            android:title="@string/Scan" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/vedio_shoot"
+            android:title="@string/title_activity_vedio_shot" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/delay_shoot"
+            android:title="@string/title_activity_delay_shot" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/abpoint"
+            android:title="@string/title_activity_abpoint" />
+    </group>
+</menu>
