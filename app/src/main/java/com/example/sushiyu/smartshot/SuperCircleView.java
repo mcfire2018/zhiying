@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 //import com.example.sushiyu.smartshot.R;
@@ -34,6 +35,10 @@ public class SuperCircleView extends View {
     private int mRingNormalColor;    //默认圆环的颜色
     private Paint mPaint;
     private int color[] = new int[3];   //渐变颜色
+    private float mViewStartX; //圆弧起始点X
+    private float mViewStartY; //圆弧起始点Y
+    private float mViewStopX; //圆弧终点X
+    private float mViewStopY; //圆弧终点Y
 
     private float mRingAngleWidth;  //每一段的角度
 
@@ -41,6 +46,8 @@ public class SuperCircleView extends View {
     private int mSelectRing = 0;        //要显示几段彩色
 
     private boolean isShowSelect = false;   //是否显示断
+
+    private int percent = 0;
 
     public SuperCircleView(Context context) {
         this(context, null);
@@ -79,10 +86,17 @@ public class SuperCircleView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+
         mViewWidth = getMeasuredWidth();
         mViewHeight = getMeasuredHeight();
         mViewCenterX = mViewWidth / 2;
         mViewCenterY = mViewHeight / 2;
+        Log.e(TAG, "mViewCenterX = "+mViewCenterX);
+        Log.e(TAG, "mMinRadio = "+mMinRadio);
+        Log.e(TAG, "mRingWidth = "+mRingWidth);
+        Log.e(TAG, "mViewCenterY = "+mViewCenterY);
+        Log.e(TAG, "mMinRadio = "+mMinRadio);
+        Log.e(TAG, "mRingWidth = "+mRingWidth);
         mRectF = new RectF(mViewCenterX - mMinRadio - mRingWidth / 2, mViewCenterY - mMinRadio - mRingWidth / 2, mViewCenterX + mMinRadio + mRingWidth / 2, mViewCenterY + mMinRadio + mRingWidth / 2);
         mRingAngleWidth = (360 - mSelect * mSelectAngle) / mSelect;
     }
@@ -90,9 +104,12 @@ public class SuperCircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         /**
          * 显示彩色断大于总共的段数是错误的
          */
+        Log.e(TAG, "onDraw");
+
         if (isShowSelect && mSelectRing > mSelect) {
             return;
         }
@@ -105,8 +122,40 @@ public class SuperCircleView extends View {
         //画彩色圆环
         drawColorRing(canvas);
 
-
     }
+
+    @Override
+     public boolean onTouchEvent(MotionEvent event) {
+
+        float Action_x = event.getX();
+        float Action_y = event.getY();
+
+        if (Action_x >=(mViewCenterX - mMinRadio - mRingWidth / 2)
+                && Action_x <= (mViewCenterX + mMinRadio + mRingWidth / 2)
+                && Action_y >= (mViewCenterY - mMinRadio - mRingWidth / 2)
+                && Action_y <= (mViewCenterY + mMinRadio + mRingWidth / 2)) {
+            Log.e(TAG, "MotionEvent " + event.getAction());
+            Log.e(TAG, "Action_x " + Action_x);
+            Log.e(TAG, "Action_y " + Action_y);
+        }
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                mViewStartX = Action_x;
+                mViewStartY = Action_y;
+                break;
+            case MotionEvent.ACTION_UP:
+                mViewStopX = Action_x;
+                mViewStopY = Action_y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
 
     /**
      * 画彩色圆环
@@ -117,20 +166,19 @@ public class SuperCircleView extends View {
         Paint ringColorPaint = new Paint(mPaint);
         ringColorPaint.setStyle(Paint.Style.STROKE);
         ringColorPaint.setStrokeWidth(mRingWidth);
+        Log.e(TAG, "drawColorRing");
         ringColorPaint.setShader(new SweepGradient(mViewCenterX, mViewCenterX, color, null));
 
         if (!isShowSelect) {
             canvas.drawArc(mRectF, 270, mSelectRing, false, ringColorPaint);
             return;
         }
-
         if (mSelect == mSelectRing && mSelectRing != 0 && mSelect != 0) {
             canvas.drawArc(mRectF, 270, 360, false, ringColorPaint);
         } else {
             Log.d(TAG, (mRingAngleWidth * mSelectRing + mSelectAngle + mSelectRing) + "");
             canvas.drawArc(mRectF, 270, mRingAngleWidth * mSelectRing + mSelectAngle * mSelectRing, false, ringColorPaint);
         }
-
         ringColorPaint.setShader(null);
         ringColorPaint.setColor(mMaxCircleColor);
         for (int i = 0; i < mSelectRing; i++) {
@@ -149,10 +197,12 @@ public class SuperCircleView extends View {
         ringNormalPaint.setStrokeWidth(mRingWidth);
         ringNormalPaint.setColor(mRingNormalColor);
         canvas.drawArc(mRectF, 270, 360, false, ringNormalPaint);
+        Log.e(TAG, "drawNormalRing");
         if (!isShowSelect) {
             return;
         }
         ringNormalPaint.setColor(mMaxCircleColor);
+        Log.e(TAG, "mSelect = "+mSelect);
         for (int i = 0; i < mSelect; i++) {
             canvas.drawArc(mRectF, 270 + (i * mRingAngleWidth + (i) * mSelectAngle), mSelectAngle, false, ringNormalPaint);
         }
@@ -164,6 +214,7 @@ public class SuperCircleView extends View {
      * @param i
      */
     public void setSelect(int i) {
+        Log.e(TAG, "setSelect");
         this.mSelectRing = i;
         this.invalidate();
     }
@@ -185,6 +236,7 @@ public class SuperCircleView extends View {
      */
     public void setShowSelect(boolean b) {
         this.isShowSelect = b;
+        Log.e(TAG, "setShowSelect");
     }
 
 

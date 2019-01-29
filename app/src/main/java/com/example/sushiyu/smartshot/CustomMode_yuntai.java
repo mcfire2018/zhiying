@@ -100,7 +100,7 @@ public class CustomMode_yuntai extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "FFF");
+
         navigationView.getMenu().removeItem(R.id.abpoint);
         navigationView.getMenu().add(MainActivity.btn_quanjing, MainActivity.btn_quanjing,
                 MainActivity.btn_quanjing, "全景拍摄");
@@ -117,30 +117,35 @@ public class CustomMode_yuntai extends AppCompatActivity
         //this.canvas = (CanvasView)this.findViewById(R.id.canvas);
 
         textView = (TextView) findViewById(R.id.tv);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "GGG");
+
         mSuperCircleView = (SuperCircleView) findViewById(R.id.superview);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "HHH");
+
         mSuperCircleView.setShowSelect(false);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "III");
+
+        mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
+        /*
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "JJJ");
+
         valueAnimator.setTarget(textView);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "KKK");
+
         valueAnimator.setDuration(2000);
-        Log.e(CUSTOMMODE_YUNTAI_TAG, "LLL");
+
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-        	Log.e(CUSTOMMODE_YUNTAI_TAG, "MMM");
+
                 int i = Integer.valueOf(String.valueOf(animation.getAnimatedValue()));
-        	Log.e(CUSTOMMODE_YUNTAI_TAG, "NNN"+i);
+
                 textView.setText(i + "");
-        	Log.e(CUSTOMMODE_YUNTAI_TAG, "OOO");
+
+                Log.e(CUSTOMMODE_YUNTAI_TAG, "select "+i);
+
                 mSuperCircleView.setSelect((int) (360 * (i / 100f)));
-        	Log.e(CUSTOMMODE_YUNTAI_TAG, "PPP");
+
             }
         });
         valueAnimator.start();
+        */
         custommode_btn_start = (ImageButton) findViewById(R.id.img_btn_custommode_start);
         custommode_btn_start.setOnTouchListener(new View.OnTouchListener() {
             @Override
