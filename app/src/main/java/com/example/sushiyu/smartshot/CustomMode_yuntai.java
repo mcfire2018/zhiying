@@ -122,7 +122,7 @@ public class CustomMode_yuntai extends AppCompatActivity
 
         mSuperCircleView.setShowSelect(false);
 
-        mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
+        //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
         /*
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
 

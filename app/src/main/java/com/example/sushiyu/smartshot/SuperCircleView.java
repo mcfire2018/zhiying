@@ -40,6 +40,15 @@ public class SuperCircleView extends View {
     private float mViewStopX; //圆弧终点X
     private float mViewStopY; //圆弧终点Y
 
+    private double AA; //余弦定理A边平方
+    private double BB; //余弦定理B边平方
+    private double CC; //余弦定理C边平方
+
+    private double A; //余弦定理A边
+    private double B; //余弦定理B边
+    private int mAngle; //余弦定理B边
+
+
     private float mRingAngleWidth;  //每一段的角度
 
     private RectF mRectF; //圆环的矩形区域
@@ -147,6 +156,23 @@ public class SuperCircleView extends View {
             case MotionEvent.ACTION_UP:
                 mViewStopX = Action_x;
                 mViewStopY = Action_y;
+                // cos(<C) = (a*a + b*b -c*c) / (2*a*b)
+                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) + (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
+                Log.e(TAG, "AA " + AA);
+                BB = ((mViewStopX - mViewCenterX) * (mViewStopX - mViewCenterX) + (mViewStopY - mViewCenterY) * (mViewStopY - mViewCenterY));
+                Log.e(TAG, "BB " + BB);
+                CC = ((mViewStartX - mViewStopX) * (mViewStartX - mViewStopX) + (mViewStartY - mViewStopY) * (mViewStartY - mViewStopY));
+                Log.e(TAG, "CC " + CC);
+                A = Math.sqrt(AA);
+                Log.e(TAG, "A" + A);
+                B = Math.sqrt(BB);
+                Log.e(TAG, "B" + B);
+                mAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
+                Log.e(TAG, "mViewStartX " + mViewStartX + "mViewStartY " + mViewStartY +
+                        "mViewStopX " + mViewStopX + "mViewStopY " + mViewStopY +
+                        "mAngle " + mAngle);
+                setSelect(mAngle);
+                //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
