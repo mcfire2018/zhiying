@@ -65,6 +65,8 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     private TextView TvShottimeTotal;
     private TextView TvRemainTimes;
     private Switch switch_direction;
+    private String mDeviceName;
+    private String mDeviceAddress;
 
 
     private ImageButton panoramic_btn_start;
@@ -81,6 +83,10 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_panoramic_shoot_yuntai);
+
+        final Intent intent = getIntent();
+        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         Calendar c = Calendar.getInstance();
 
         String month = Integer.toString(c.get(Calendar.MONTH));
@@ -590,6 +596,14 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         }else if (id == MainActivity.btn_quanjing) {
             Log.e(PANORAMIC_YUNTAI_TAG, "btn_quanjing");
         }else if (id == MainActivity.btn_zidingyi) {
+            Log.e(PANORAMIC_YUNTAI_TAG, "btn_zidingyi");
+            Intent intent1 = new Intent(PanoramicShoot_yuntai.this,
+                    CustomMode_yuntai.class);
+            intent1.putExtra(MainActivity.EXTRAS_DEVICE_NAME,
+                    mDeviceName);
+            intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
+                    mDeviceAddress);
+            startActivity(intent1);
             Log.e(PANORAMIC_YUNTAI_TAG, "btn_zidingyi");
 
         }else if (id == R.id.scan) {

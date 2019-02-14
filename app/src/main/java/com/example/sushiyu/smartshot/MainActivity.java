@@ -760,6 +760,13 @@ public class MainActivity extends AppCompatActivity
         }else if (id == btn_zidingyi) {
             timer.cancel();
             shoot_mode = 2;
+            Intent intent1 = new Intent(MainActivity.this,
+                    CustomMode_yuntai.class);
+            intent1.putExtra(MainActivity.EXTRAS_DEVICE_NAME,
+                    mDeviceName);
+            intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
+                    mDeviceAddress);
+            startActivity(intent1);
             Log.e(MAINACTIVITY_TAG, "btn_zidingyi");
 
         }

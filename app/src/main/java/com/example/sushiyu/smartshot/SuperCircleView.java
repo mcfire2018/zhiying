@@ -180,59 +180,22 @@ public class SuperCircleView extends View {
 			Log.e(TAG, "mViewStartX " + mViewStartX);
 			Log.e(TAG, "mViewStartY " + mViewStartY);
 			this.invalidate();
-        	/*
+
 	        switch(event.getAction())
 	        {
 	            case MotionEvent.ACTION_DOWN:
-	                mViewStartX = Action_x;
-	                mViewStartY = Action_y;
-					Log.e(TAG, "--------------------------");
-					// cos(<C) = (a*a + b*b -c*c) / (2*a*b)
-	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) + (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
-	                Log.e(TAG, "AA " + AA);
-	                BB = ((mViewZeroAngleX - mViewCenterX) * (mViewZeroAngleX - mViewCenterX) + (mViewZeroAngleY - mViewCenterY) * (mViewZeroAngleY - mViewCenterY));
-	                Log.e(TAG, "BB " + BB);
-	                CC = ((mViewStartX - mViewZeroAngleX) * (mViewStartX - mViewZeroAngleX) + (mViewStartY - mViewZeroAngleY) * (mViewStartY - mViewZeroAngleY));
-	                Log.e(TAG, "CC " + CC);
-	                A = Math.sqrt(AA);
-	                Log.e(TAG, "A" + A);
-	                B = Math.sqrt(BB);
-	                Log.e(TAG, "B" + B);
-	                mStartAngle = (360 - (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3));
-	                //mStartAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
-	                Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
-	                        " mViewZeroAngleX " + mViewZeroAngleX + " mViewZeroAngleY " + mViewZeroAngleY +
-	                        " mStartAngle " + mStartAngle);
-	                //setSelect(mAngle);
+					Log.e(TAG, "ACTION_DOWN");
 	                break;
 	            case MotionEvent.ACTION_UP:
-	                mViewStopX = Action_x;
-	                mViewStopY = Action_y;
-					Log.e(TAG, "###########################");
-	                // cos(<C) = (a*a + b*b -c*c) / (2*a*b)
-	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) + (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
-	                Log.e(TAG, "AA " + AA);
-	                BB = ((mViewStopX - mViewCenterX) * (mViewStopX - mViewCenterX) + (mViewStopY - mViewCenterY) * (mViewStopY - mViewCenterY));
-	                Log.e(TAG, "BB " + BB);
-	                CC = ((mViewStartX - mViewStopX) * (mViewStartX - mViewStopX) + (mViewStartY - mViewStopY) * (mViewStartY - mViewStopY));
-	                Log.e(TAG, "CC " + CC);
-	                A = Math.sqrt(AA);
-	                Log.e(TAG, "A" + A);
-	                B = Math.sqrt(BB);
-	                Log.e(TAG, "B" + B);
-	                mAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
-	                Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
-	                        " mViewStopX " + mViewStopX + " mViewStopY " + mViewStopY +
-	                        " mAngle " + mAngle);
-	                setSelect(mAngle);
-	                //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
+                    Log.e(TAG, "ACTION_UP");
 	                break;
 	            case MotionEvent.ACTION_MOVE:
+                    Log.e(TAG, "ACTION_MOVE");
 	                break;
 	            default:
 	                break;
 	        }
-	        */
+
 		}
 		else
 	    {

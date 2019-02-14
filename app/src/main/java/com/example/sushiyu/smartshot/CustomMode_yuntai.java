@@ -64,8 +64,8 @@ public class CustomMode_yuntai extends AppCompatActivity
     private TextView TvJiaodu;
     private int jiaodu_num;
     private Switch switch_direction;
-
-
+    private String mDeviceName;
+    private String mDeviceAddress;
     private ImageButton custommode_btn_start;
     private boolean custommode_start_press_flag = false;
     private boolean get_param_success;
@@ -85,11 +85,16 @@ public class CustomMode_yuntai extends AppCompatActivity
         setContentView(R.layout.activity_custommode_yuntai);
         Calendar c = Calendar.getInstance();
 
+        final Intent intent = getIntent();
+        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         String month = Integer.toString(c.get(Calendar.MONTH));
         String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
         String hour = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
         String min = Integer.toString(c.get(Calendar.MINUTE));
         Log.e(CUSTOMMODE_YUNTAI_TAG, "Calendar获取当前日期"+"2018"+"年"+month+"月"+day+"日"+hour+":"+min);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,7 +121,7 @@ public class CustomMode_yuntai extends AppCompatActivity
 
         //this.canvas = (CanvasView)this.findViewById(R.id.canvas);
 
-        textView = (TextView) findViewById(R.id.tv);
+        textView = (TextView) findViewById(R.id.tv_zidingyi);
 
         mSuperCircleView = (SuperCircleView) findViewById(R.id.superview);
 
@@ -500,6 +505,13 @@ public class CustomMode_yuntai extends AppCompatActivity
             startActivity(intent1);
         }else if (id == MainActivity.btn_quanjing) {
             Log.e(CUSTOMMODE_YUNTAI_TAG, "btn_quanjing");
+            Intent intent1 = new Intent(CustomMode_yuntai.this,
+                    PanoramicShoot_yuntai.class);
+            intent1.putExtra(CustomMode_yuntai.EXTRAS_DEVICE_NAME,
+                    mDeviceName);
+            intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
+                    mDeviceAddress);
+            startActivity(intent1);
         }else if (id == MainActivity.btn_zidingyi) {
             Log.e(CUSTOMMODE_YUNTAI_TAG, "btn_zidingyi");
 
