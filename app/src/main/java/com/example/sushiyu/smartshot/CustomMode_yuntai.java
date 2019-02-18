@@ -74,7 +74,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     private int yunxing_second;
     private boolean screen_toggle;
 
-    private boolean debug = true;
+    private boolean debug = false;
     SuperCircleView mSuperCircleView;
     TextView textView;
 
@@ -121,12 +121,55 @@ public class CustomMode_yuntai extends AppCompatActivity
 
         //this.canvas = (CanvasView)this.findViewById(R.id.canvas);
 
-        textView = (TextView) findViewById(R.id.tv_zidingyi);
+        textView = (TextView) findViewById(R.id.tv);
 
         mSuperCircleView = (SuperCircleView) findViewById(R.id.superview);
 
         mSuperCircleView.setShowSelect(false);
 
+
+        mSuperCircleView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_UP:
+                        Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
+                                + " mAngle = "+mSuperCircleView.mAngle + " direction_init = "+mSuperCircleView.direction_init);
+						textView.setText("角度:"+mSuperCircleView.mAngle);
+						String str_direction;
+						if (mSuperCircleView.direction_init == 0xFF)
+						{
+							str_direction = "FF";
+						}
+						else
+						{
+							str_direction = "00";
+						}
+						
+						String tx_string = "0093020401" + 
+							String.format("%02x", (mSuperCircleView.mAngle % 256)) +
+							String.format("%02x", (mSuperCircleView.mAngle / 256)) + 
+							str_direction;
+						if(!connect_status_bit)
+                            return false;
+						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+                        mBluetoothLeService.txxx(tx_string);
+						delay(20);
+						tx_string = "0093020403";
+						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+						mBluetoothLeService.txxx(tx_string);
+                        
+                        break;
+                    default:
+                        break;
+                }
+
+                //textView.setText(mSuperCircleView.mAngle);
+                return false;
+            }
+
+        });
         //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
         /*
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
@@ -210,7 +253,7 @@ public class CustomMode_yuntai extends AppCompatActivity
                 mConnected = true;
                 connect_status_bit=true;
                 //timer.cancel();
-                Log.e(CUSTOMMODE_YUNTAI_TAG, "delayshot connected!");
+                Log.e(CUSTOMMODE_YUNTAI_TAG, "custommode connected!");
                 mBluetoothLeService.txxx("0003020300000000");
 				Log.e(CUSTOMMODE_YUNTAI_TAG, "tx 0003020300000000");
                 delay(20);

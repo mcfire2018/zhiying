@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 //import com.example.sushiyu.smartshot.R;
 
@@ -35,6 +36,8 @@ public class SuperCircleView extends View {
     private int mRingNormalColor;    //默认圆环的颜色
     private Paint mPaint;
     private int color[] = new int[3];   //渐变颜色
+    private float mViewStartXRec;
+	private float mViewStartYRec;
     private float mViewStartX; //圆弧起始点X
     private float mViewStartY; //圆弧起始点Y
     private float mViewStopX; //圆弧终点X
@@ -47,7 +50,7 @@ public class SuperCircleView extends View {
     private double A; //余弦定理A边
     private double B; //余弦定理B边
     private int mStartAngle; //余弦定理B边
-    private int mAngle; //余弦定理B边
+
     private int mViewZeroAngleX;   //view宽的中心点
     private int mViewZeroAngleY;   //view高的中心点
 
@@ -60,6 +63,10 @@ public class SuperCircleView extends View {
     private boolean isShowSelect = false;   //是否显示断
 
     private int percent = 0;
+    public static int mAngle; //余弦定理B边
+    public static int direction = 0x00;
+    public static int direction_init = 0xAA;
+	TextView textView;
 
     public SuperCircleView(Context context) {
         this(context, null);
@@ -95,6 +102,7 @@ public class SuperCircleView extends View {
 		color[0] = Color.parseColor("#000000");
         color[1] = Color.parseColor("#000000");
         color[2] = Color.parseColor("#000000");
+		
     }
 
 
@@ -107,7 +115,7 @@ public class SuperCircleView extends View {
         mViewCenterX = mViewWidth / 2;
         mViewCenterY = mViewHeight / 2;
 		mViewZeroAngleX = mViewCenterX + mMinRadio + (int)(mRingWidth / 2);
-		mViewZeroAngleY = mViewCenterY + mMinRadio + (int)(mRingWidth / 2);
+		mViewZeroAngleY = mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
         Log.e(TAG, "mViewCenterX = "+mViewCenterX);
         Log.e(TAG, "mMinRadio = "+mMinRadio);
         Log.e(TAG, "mRingWidth = "+mRingWidth);
@@ -180,22 +188,87 @@ public class SuperCircleView extends View {
 			Log.e(TAG, "mViewStartX " + mViewStartX);
 			Log.e(TAG, "mViewStartY " + mViewStartY);
 			this.invalidate();
-
+        	
 	        switch(event.getAction())
 	        {
 	            case MotionEvent.ACTION_DOWN:
-					Log.e(TAG, "ACTION_DOWN");
+	                //mViewStartX = Action_x;
+	                //mViewStartY = Action_y;
+	                mViewStartXRec = mViewStartX;
+					mViewStartYRec = mViewStartY;
+                    mAngle = 0;
+                    direction = 0;
+                    direction_init = 0xAA;
+					Log.e(TAG, "--------------------------");
+					// cos(<C) = (a*a + b*b -c*c) / (2*a*b)
+	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) + (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
+	                Log.e(TAG, "AA " + AA);
+	                BB = ((mViewZeroAngleX - mViewCenterX) * (mViewZeroAngleX - mViewCenterX) + (mViewZeroAngleY - mViewCenterY) * (mViewZeroAngleY - mViewCenterY));
+	                Log.e(TAG, "BB " + BB);
+	                CC = ((mViewStartX - mViewZeroAngleX) * (mViewStartX - mViewZeroAngleX) + (mViewStartY - mViewZeroAngleY) * (mViewStartY - mViewZeroAngleY));
+	                Log.e(TAG, "CC " + CC);
+	                A = Math.sqrt(AA);
+	                Log.e(TAG, "A" + A);
+	                B = Math.sqrt(BB);
+	                Log.e(TAG, "B" + B);
+	                mStartAngle = (360 - (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3));
+	                //mStartAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
+	                Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
+	                        " mViewZeroAngleX " + mViewZeroAngleX + " mViewZeroAngleY " + mViewZeroAngleY +
+	                        " mStartAngle " + mStartAngle);
+	                //setSelect(mAngle);
 	                break;
 	            case MotionEvent.ACTION_UP:
-                    Log.e(TAG, "ACTION_UP");
+					//textView = ((TextView)findViewById(R.id.tv)).setText("abc");;
+	                //textView.setText(""+mAngle);
+					mViewStartXRec = 0;
+					mViewStartYRec = 0;
+					mAngle = 0;
+					mStartAngle = 0;
+	                //setSelect(mAngle);
+	                //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
 	                break;
 	            case MotionEvent.ACTION_MOVE:
-                    Log.e(TAG, "ACTION_MOVE");
+					//mViewStopX = Action_x;
+	                //mViewStopY = Action_y;
+					Log.e(TAG, "###########################");
+	                // cos(<C) = (a*a + b*b -c*c) / (2*a*b)
+	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) + (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
+	                Log.e(TAG, "AA " + AA);
+	                BB = ((mViewStartXRec - mViewCenterX) * (mViewStartXRec - mViewCenterX) + (mViewStartYRec - mViewCenterY) * (mViewStartYRec - mViewCenterY));
+	                Log.e(TAG, "BB " + BB);
+	                CC = ((mViewStartX - mViewStartXRec) * (mViewStartX - mViewStartXRec) + (mViewStartY - mViewStartYRec) * (mViewStartY - mViewStartYRec));
+	                Log.e(TAG, "CC " + CC);
+	                A = Math.sqrt(AA);
+	                Log.e(TAG, "A" + A);
+	                B = Math.sqrt(BB);
+	                Log.e(TAG, "B" + B);
+	                
+					direction = (((mViewStartXRec - mViewCenterX) * (mViewStartY - mViewCenterY) - 
+						(mViewStartYRec - mViewCenterY) * (mViewStartX - mViewCenterX)) > 0) ? (0x0):(0xff);
+					if (direction_init == 0xAA)
+					{
+						direction_init = direction;
+					}
+					if (direction_init == direction)
+					{
+						mAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
+						Log.e("allwinnertech", "0'c");
+					}
+					else
+					{
+						mAngle = 360 - ((int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3));
+						Log.e("allwinnertech", "360'c");
+					}
+					/*Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
+	                        " mViewStartXRec " + mViewStartXRec + " mViewStartYRec " + mViewStartYRec +
+	                        " mAngle " + mAngle + " direction " + direction);*/
+					Log.e("allwinnertech", "mAngle " + mAngle + " direction " + direction + " direction_init " + direction_init);
 	                break;
 	            default:
 	                break;
 	        }
-
+	        
 		}
 		else
 	    {

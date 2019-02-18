@@ -76,8 +76,6 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_custommode_shoot"
             android:theme="@style/AppTheme.NoActionBar">
-
-
         </activity>
     </application>
 

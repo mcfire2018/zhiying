@@ -760,6 +760,9 @@ public class VedioShot_yuntai extends AppCompatActivity
         }else if (id == MainActivity.btn_zidingyi) {
             timer.cancel();
             Log.e(VEDIOSHOT_YUNTAI_TAG, "btn_zidingyi");
+            Intent intent1 = new Intent(VedioShot_yuntai.this,
+                    CustomMode_yuntai.class);
+            startActivity(intent1);
 
         }else if (id == R.id.scan) {
             /*任意界面只要按左菜单扫描按钮就会重新扫描*/
