@@ -117,7 +117,7 @@ public class CustomMode_yuntai extends AppCompatActivity
             Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
             sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         }
-        timer.schedule(task, 1000, 1000);
+        //timer.schedule(task, 1000, 1000);
 
         //this.canvas = (CanvasView)this.findViewById(R.id.canvas);
 
@@ -136,15 +136,17 @@ public class CustomMode_yuntai extends AppCompatActivity
                     case MotionEvent.ACTION_UP:
                         Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
                                 + " mAngle = "+mSuperCircleView.mAngle + " direction_init = "+mSuperCircleView.direction_init);
-						textView.setText("角度:"+mSuperCircleView.mAngle);
+
 						String str_direction;
 						if (mSuperCircleView.direction_init == 0xFF)
 						{
 							str_direction = "FF";
+                            textView.setText("逆时针:"+mSuperCircleView.mAngle);
 						}
 						else
 						{
 							str_direction = "00";
+                            textView.setText("顺时针:"+mSuperCircleView.mAngle);
 						}
 						
 						String tx_string = "0093020401" + 
@@ -323,89 +325,7 @@ public class CustomMode_yuntai extends AppCompatActivity
 
                 Log.e(CUSTOMMODE_YUNTAI_TAG, "Receive Data : "+str);
                 get_param_success = true;
-                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                if (str.length() != 18)
-                {
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "Receive Data Length not right, str = "+str);
-                    return;
-                }
 
-                if (str.substring(0,4).equals("0305"))
-                {
-                    String tmp_str;
-
-                    /*jiaodu*/
-                    int jiaodu_num_high;
-                    int jiaodu_num_low;
-                    tmp_str = str.substring(4,6);
-                    jiaodu_num_low = Integer.valueOf(tmp_str,16);
-                    tmp_str = str.substring(6,8);
-                    jiaodu_num_high = Integer.valueOf(tmp_str,16);
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "seepd_string = "+tmp_str);
-                    TvJiaodu.setText(""+(jiaodu_num_high*256 + jiaodu_num_low));
-
-                    /*yunxing shi,fen,miao*/
-
-                    /*yunxing second*/
-                    tmp_str = str.substring(8,10);
-                    yunxing_second = Integer.valueOf(tmp_str,16);
-                    //EtSecond.setText(""+tmp_str);
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "zhuge second = "+tmp_str);
-                    /*yunxing minute*/
-                    tmp_str = str.substring(10,12);
-                    yunxing_minute = Integer.valueOf(tmp_str,16);
-                    //EtMinute.setText(""+tmp_str);
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "zhuge minute = "+tmp_str);
-                    /*yunxing hour*/
-                    tmp_str = str.substring(12,14);
-                    yunxing_hour = Integer.valueOf(tmp_str,16);
-                    //EtHour.setText(""+tmp_str);
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "zhuge hour = "+tmp_str);
-
-                    Tvpanoramic_yunxing_time.setText(
-                            String.format("%02d", yunxing_hour)+"  :  "+
-                                    String.format("%02d", yunxing_minute)+"  :  "+
-                                    String.format("%02d", yunxing_second));
-
-                    /*direction*/
-                    tmp_str = str.substring(14,16);
-                    if (tmp_str.equals("00"))
-                    {
-                        Log.e(CUSTOMMODE_YUNTAI_TAG, "00");
-                        switch_direction.setChecked(false);
-                    }
-                    else if(tmp_str.equals("FF"))
-                    {
-                        Log.e(CUSTOMMODE_YUNTAI_TAG, "FF");
-                        switch_direction.setChecked(true);
-                    }
-                    else
-                    {
-                        Log.e(CUSTOMMODE_YUNTAI_TAG, "fuck");
-                    }
-                    /*start or stop*/
-                    tmp_str = str.substring(14,16);
-
-                    if (tmp_str.equals("FF"))
-                    {
-
-                        custommode_btn_start.setBackgroundResource(R.drawable.stop);
-                        custommode_start_press_flag = true;
-                    }
-                    else if(tmp_str.equals("00"))
-                    {
-
-                        custommode_btn_start.setBackgroundResource(R.drawable.start);
-                        custommode_start_press_flag = false;
-                    }
-                    get_param_success = true;
-                    timer.cancel();
-                }
-                else
-                {
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "not equal to 0303");
-                    get_param_success = false;
-                }
             }
         }
     };
@@ -485,9 +405,9 @@ public class CustomMode_yuntai extends AppCompatActivity
             {
                 if (connect_status_bit)
                 {
-                    Log.e(CUSTOMMODE_YUNTAI_TAG, "retry");
-                    mBluetoothLeService.txxx("0003020300000000");
-					Log.e(CUSTOMMODE_YUNTAI_TAG, "tx 0003020300000000");
+                    //Log.e(CUSTOMMODE_YUNTAI_TAG, "retry");
+                    //mBluetoothLeService.txxx("0003020300000000");
+					//Log.e(CUSTOMMODE_YUNTAI_TAG, "tx 0003020300000000");
                 }
             }
         }
@@ -664,7 +584,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     protected void onPause() {
         Log.e(CUSTOMMODE_YUNTAI_TAG, "delayshot onPause");
         super.onPause();
-        //unregisterReceiver(mGattUpdateReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
@@ -673,10 +593,11 @@ public class CustomMode_yuntai extends AppCompatActivity
         super.onDestroy();
         mBluetoothLeService.disconnect();
         unbindService(mServiceConnection);
+        unregisterReceiver(mGattUpdateReceiver);
         mBluetoothLeService = null;
         timer.cancel();
         timer=null;
-        unregisterReceiver(mGattUpdateReceiver);
+
     }
 
 
