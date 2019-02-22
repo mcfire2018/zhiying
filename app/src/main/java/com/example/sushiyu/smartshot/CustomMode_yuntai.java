@@ -67,7 +67,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     private String mDeviceName;
     private String mDeviceAddress;
     private ImageButton custommode_btn_start;
-    private boolean custommode_start_press_flag = false;
+    private boolean custommode_start_press_flag = true;
     private boolean get_param_success;
     private int yunxing_hour;
     private int yunxing_minute;
@@ -131,34 +131,37 @@ public class CustomMode_yuntai extends AppCompatActivity
         mSuperCircleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                String tx_string;
                 switch(motionEvent.getAction())
                 {
-                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_MOVE:
                         Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
                                 + " mAngle = "+mSuperCircleView.mAngle + " direction_init = "+mSuperCircleView.direction_init);
 
-						String str_direction;
-						if (mSuperCircleView.direction_init == 0xFF)
-						{
-							str_direction = "FF";
+                        String str_direction;
+                        if (mSuperCircleView.direction_init == 0xFF)
+                        {
+                            str_direction = "FF";
                             textView.setText("逆时针:"+mSuperCircleView.mAngle);
-						}
-						else
-						{
-							str_direction = "00";
+                        }
+                        else
+                        {
+                            str_direction = "00";
                             textView.setText("顺时针:"+mSuperCircleView.mAngle);
-						}
-						
-						String tx_string = "0093020401" + 
-							String.format("%02x", (mSuperCircleView.mAngle % 256)) +
-							String.format("%02x", (mSuperCircleView.mAngle / 256)) + 
-							str_direction;
-						if(!connect_status_bit)
+                        }
+
+                        tx_string = "0093020401" +
+                                String.format("%02x", (mSuperCircleView.mAngle % 256)) +
+                                String.format("%02x", (mSuperCircleView.mAngle / 256)) +
+                                str_direction;
+                        if(!connect_status_bit)
                             return false;
-						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+                        Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
                         mBluetoothLeService.txxx(tx_string);
-						delay(20);
-						tx_string = "0093020403";
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+						tx_string = "0093020403000000";
 						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
 						mBluetoothLeService.txxx(tx_string);
                         

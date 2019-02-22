@@ -60,7 +60,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="0dp"
-            android:background="@drawable/stop"
+            android:background="@drawable/start"
             android:scaleType="fitXY" />
 
 
