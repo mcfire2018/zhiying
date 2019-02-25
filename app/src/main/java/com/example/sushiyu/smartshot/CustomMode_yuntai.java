@@ -74,7 +74,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     private int yunxing_second;
     private boolean screen_toggle;
 
-    private boolean debug = false;
+    private boolean debug = true;
     SuperCircleView mSuperCircleView;
     TextView textView;
 
@@ -136,18 +136,18 @@ public class CustomMode_yuntai extends AppCompatActivity
                 {
                     case MotionEvent.ACTION_MOVE:
                         Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
-                                + " mAngle = "+mSuperCircleView.mAngle + " direction_init = "+mSuperCircleView.direction_init);
+                                + " mSumAngle = "+mSuperCircleView.mSumAngle_final + " direction_init = "+mSuperCircleView.direction_init);
 
                         String str_direction;
                         if (mSuperCircleView.direction_init == 0xFF)
                         {
                             str_direction = "FF";
-                            textView.setText("逆时针:"+mSuperCircleView.mAngle);
+                            textView.setText("逆时针:"+mSuperCircleView.mSumAngle_final);
                         }
                         else
                         {
                             str_direction = "00";
-                            textView.setText("顺时针:"+mSuperCircleView.mAngle);
+                            textView.setText("顺时针:"+mSuperCircleView.mSumAngle_final);
                         }
 
                         tx_string = "0093020401" +
@@ -163,6 +163,8 @@ public class CustomMode_yuntai extends AppCompatActivity
 
 						tx_string = "0093020403000000";
 						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+                        if(!connect_status_bit)
+                            return false;
 						mBluetoothLeService.txxx(tx_string);
                         
                         break;

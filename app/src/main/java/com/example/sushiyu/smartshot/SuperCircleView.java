@@ -23,12 +23,12 @@ public class SuperCircleView extends View {
 
     private final String TAG = "SuperCircleView";
 
-    private int mViewWidth; //view的宽
-    private int mViewHeight;    //view的高
-    private int mViewCenterX;   //view宽的中心点
-    private int mViewCenterY;   //view高的中心点
-    private int mMinRadio; //最里面白色圆的半径
-    private float mRingWidth; //圆环的宽度
+    public static int mViewWidth; //view的宽
+    public static int mViewHeight;    //view的高
+    public static int mViewCenterX;   //view宽的中心点
+    public static int mViewCenterY;   //view高的中心点
+    public static int mMinRadio; //最里面白色圆的半径
+    public static float mRingWidth; //圆环的宽度
     private int mSelect;    //分成多少段
     private int mSelectAngle;   //每个圆环之间的间隔
     private int mMinCircleColor;    //最里面圆的颜色
@@ -36,23 +36,25 @@ public class SuperCircleView extends View {
     private int mRingNormalColor;    //默认圆环的颜色
     private Paint mPaint;
     private int color[] = new int[3];   //渐变颜色
-    private float mViewStartXRec;
-	private float mViewStartYRec;
-    private float mViewStartX; //圆弧起始点X
-    private float mViewStartY; //圆弧起始点Y
-    private float mViewStopX; //圆弧终点X
-    private float mViewStopY; //圆弧终点Y
+    public static float mViewStartXRec;
+    public static float mViewStartYRec;
+    public static float mViewStartXPrev;
+    public static float mViewStartYPrev;
+    public static float mViewCurrentX; //圆弧起始点X
+    public static float mViewCurrentY; //圆弧起始点Y
+    public static float mViewStopX; //圆弧终点X
+    public static float mViewStopY; //圆弧终点Y
 
-    private double AA; //余弦定理A边平方
-    private double BB; //余弦定理B边平方
-    private double CC; //余弦定理C边平方
+    public static double AA; //余弦定理A边平方
+    public static double BB; //余弦定理B边平方
+    public static double CC; //余弦定理C边平方
 
-    private double A; //余弦定理A边
-    private double B; //余弦定理B边
-    private int mStartAngle; //余弦定理B边
-
-    private int mViewZeroAngleX;   //view宽的中心点
-    private int mViewZeroAngleY;   //view高的中心点
+    public static double A; //余弦定理A边
+    public static double B; //余弦定理B边
+    public static int mSumAngle;
+    public static int mSumAngle_final;
+    public static int mViewZeroAngleX;   //view宽的中心点
+    public static int mViewZeroAngleY;   //view高的中心点
 
 
     private float mRingAngleWidth;  //每一段的角度
@@ -67,12 +69,8 @@ public class SuperCircleView extends View {
     private int count_n = 0;
     public static int mAngle; //余弦定理B边
     public static int direction = 0x00;
-    public static int direction_init = 0xAA;
-    private int direction_rec_0;
-    private int direction_rec_1;
-    private int direction_rec_2;
-    private int direction_rec_3;
-    private int direction_init_cnt;
+    public static int direction_init = 0x0;
+    private int Angle_delta;
 	TextView textView;
 
     public SuperCircleView(Context context) {
@@ -126,8 +124,8 @@ public class SuperCircleView extends View {
         mViewCenterY = mViewHeight / 2;
 		mViewZeroAngleX = mViewCenterX + mMinRadio + (int)(mRingWidth / 2);
 		mViewZeroAngleY = mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
-        mViewStartX = mViewZeroAngleX;
-        mViewStartY = mViewZeroAngleY;
+        mViewCurrentX = mViewZeroAngleX;
+        mViewCurrentY = mViewZeroAngleY;
         Log.e(TAG, "mViewCenterX = "+mViewCenterX);
         Log.e(TAG, "mMinRadio = "+mMinRadio);
         Log.e(TAG, "mRingWidth = "+mRingWidth);
@@ -150,7 +148,7 @@ public class SuperCircleView extends View {
         /**
          * 显示彩色断大于总共的段数是错误的
          */
-        Log.e(TAG, "onDraw isShowSelect " + isShowSelect);
+        //Log.e(TAG, "onDraw isShowSelect " + isShowSelect);
 
         if (isShowSelect && mSelectRing > mSelect) {
             return;
@@ -175,7 +173,7 @@ public class SuperCircleView extends View {
 
 		distance = (float)Math.sqrt((Action_x - mViewCenterX) * (Action_x - mViewCenterX) + 
 			(Action_y - mViewCenterY) * (Action_y - mViewCenterY));
-		Log.e(TAG, "distance " + distance);
+		//Log.e(TAG, "distance " + distance);
 		/*
         if (Action_x >= (mViewCenterX - mMinRadio - mRingWidth / 2 - 50)
             && Action_x <= (mViewCenterX + mMinRadio + mRingWidth / 2 + 50)
@@ -183,7 +181,7 @@ public class SuperCircleView extends View {
             && Action_y <= (mViewCenterY + mMinRadio + mRingWidth / 2 + 50)) {
         */
         if ((distance <= (mMinRadio + mRingWidth / 2 + 100)) && distance >= 50){
-			  
+			/*
             Log.e(TAG, "MotionEvent " + event.getAction());
             Log.e(TAG, "Action_x " + Action_x);
             Log.e(TAG, "Action_y " + Action_y);
@@ -195,62 +193,62 @@ public class SuperCircleView extends View {
 			Log.e(TAG, "mViewCenterY " + mViewCenterY);
             Log.e(TAG, "mMinRadio " + mMinRadio);
             Log.e(TAG, "mRingWidth / 2 " + mRingWidth / 2);
-			
+			*/
 			
 			//canvas.drawCircle(20, 60, circle);
-			mViewStartX = (((Action_x - mViewCenterX) * (mMinRadio + mRingWidth / 2)) / distance)
+
+            mViewStartXPrev = mViewCurrentX;
+            mViewStartYPrev = mViewCurrentY;
+            mViewCurrentX = (((Action_x - mViewCenterX) * (mMinRadio + mRingWidth / 2)) / distance)
                     + mViewCenterX;
-	        mViewStartY = (((Action_y - mViewCenterY) * (mMinRadio + mRingWidth / 2)) / distance)
+            mViewCurrentY = (((Action_y - mViewCenterY) * (mMinRadio + mRingWidth / 2)) / distance)
                     + mViewCenterY;
-			Log.e(TAG, "mViewStartX " + mViewStartX);
-			Log.e(TAG, "mViewStartY " + mViewStartY);
+			//Log.e(TAG, "mViewCurrentX " + mViewCurrentX);
+			//Log.e(TAG, "mViewCurrentY " + mViewCurrentY);
 			this.invalidate();
         	
 	        switch(event.getAction())
 	        {
 	            case MotionEvent.ACTION_DOWN:
-	                //mViewStartX = Action_x;
-	                //mViewStartY = Action_y;
-	                mViewStartXRec = mViewStartX;
-					mViewStartYRec = mViewStartY;
-                    mAngle = 0;
+	                //mViewCurrentX = Action_x;
+	                //mViewCurrentY = Action_y;
+	                mViewStartXRec = mViewCurrentX;
+					mViewStartYRec = mViewCurrentY;
+                    mSumAngle = 0;
+                    //mAngle = 0;
                     direction = 0;
-                    direction_init = 0xAA;
-                    direction_init_cnt = 0;
-                    direction_rec_0 = 0;
-                    direction_rec_1 = 0;
-                    direction_rec_2 = 0;
-                    direction_rec_3 = 0;
-                    //direction_array = null;
-					Log.e(TAG, "--------------------------");
-					// cos(<C) = (a*a + b*b -c*c) / (2*a*b)
-	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) +
-                            (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
-	                Log.e(TAG, "AA " + AA);
-	                BB = ((mViewZeroAngleX - mViewCenterX) * (mViewZeroAngleX - mViewCenterX) +
-                            (mViewZeroAngleY - mViewCenterY) * (mViewZeroAngleY - mViewCenterY));
-	                Log.e(TAG, "BB " + BB);
-	                CC = ((mViewStartX - mViewZeroAngleX) * (mViewStartX - mViewZeroAngleX) +
-                            (mViewStartY - mViewZeroAngleY) * (mViewStartY - mViewZeroAngleY));
-	                Log.e(TAG, "CC " + CC);
-	                A = Math.sqrt(AA);
-	                Log.e(TAG, "A" + A);
-	                B = Math.sqrt(BB);
-	                Log.e(TAG, "B" + B);
-	                mStartAngle = (360 - (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3));
-	                //mStartAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
-	                Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
-	                        " mViewZeroAngleX " + mViewZeroAngleX + " mViewZeroAngleY " + mViewZeroAngleY +
-	                        " mStartAngle " + mStartAngle);
-	                //setSelect(mAngle);
+
 	                break;
 	            case MotionEvent.ACTION_UP:
 					//textView = ((TextView)findViewById(R.id.tv)).setText("abc");;
 	                //textView.setText(""+mAngle);
+
+                    if (mSumAngle >= 360)
+                    {
+                        mSumAngle = 360;
+                    }
+
+                    if (mSumAngle < -360)
+                    {
+                        mSumAngle = -360;
+                    }
+                    if (mSumAngle >= 0)
+                    {
+                        mSumAngle_final = mSumAngle;
+                        direction_init = 0x0;
+                        Log.e("sushiyu1", "mSumAngle_final " + mSumAngle_final);
+                        Log.e("sushiyu1", "direction_init " + direction_init);
+                    }
+                    else
+                    {
+                        mSumAngle_final = - mSumAngle;
+                        direction_init = 0xff;
+                        Log.e("sushiyu1", "mSumAngle_final " + mSumAngle_final);
+                        Log.e("sushiyu1", "direction_init " + direction_init);
+                    }
 					mViewStartXRec = 0;
 					mViewStartYRec = 0;
-					mAngle = 0;
-					mStartAngle = 0;
+
 	                //setSelect(mAngle);
 	                //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
 	                break;
@@ -259,86 +257,38 @@ public class SuperCircleView extends View {
 	                //mViewStopY = Action_y;
 					Log.e(TAG, "###########################");
 	                // cos(<C) = (a*a + b*b -c*c) / (2*a*b)
-	                AA = ((mViewStartX - mViewCenterX) * (mViewStartX - mViewCenterX) +
-                            (mViewStartY - mViewCenterY) * (mViewStartY - mViewCenterY));
-	                Log.e(TAG, "AA " + AA);
-	                BB = ((mViewStartXRec - mViewCenterX) * (mViewStartXRec - mViewCenterX) +
-                            (mViewStartYRec - mViewCenterY) * (mViewStartYRec - mViewCenterY));
-	                Log.e(TAG, "BB " + BB);
-	                CC = ((mViewStartX - mViewStartXRec) * (mViewStartX - mViewStartXRec) +
-                            (mViewStartY - mViewStartYRec) * (mViewStartY - mViewStartYRec));
-	                Log.e(TAG, "CC " + CC);
+	                AA = ((mViewCurrentX - mViewCenterX) * (mViewCurrentX - mViewCenterX) +
+                            (mViewCurrentY - mViewCenterY) * (mViewCurrentY - mViewCenterY));
+	                //Log.e(TAG, "AA " + AA);
+	                BB = ((mViewStartXPrev - mViewCenterX) * (mViewStartXPrev - mViewCenterX) +
+                            (mViewStartYPrev - mViewCenterY) * (mViewStartYPrev - mViewCenterY));
+	                //Log.e(TAG, "BB " + BB);
+	                CC = ((mViewCurrentX - mViewStartXPrev) * (mViewCurrentX - mViewStartXPrev) +
+                            (mViewCurrentY - mViewStartYPrev) * (mViewCurrentY - mViewStartYPrev));
+	                //Log.e(TAG, "CC " + CC);
 	                A = Math.sqrt(AA);
-	                Log.e(TAG, "A" + A);
+	                //Log.e(TAG, "A" + A);
 	                B = Math.sqrt(BB);
-	                Log.e(TAG, "B" + B);
+	                //Log.e(TAG, "B" + B);
 	                
-					direction = (((mViewStartXRec - mViewCenterX) * (mViewStartY - mViewCenterY) - 
-						(mViewStartYRec - mViewCenterY) * (mViewStartX - mViewCenterX)) > 0) ? (0x0):(0xff);
+					direction = (((mViewStartXPrev - mViewCenterX) * (mViewCurrentY - mViewCenterY) -
+						(mViewStartYPrev - mViewCenterY) * (mViewCurrentX - mViewCenterX)) > 0) ? (0x0):(0xff);
 
+                    Angle_delta = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
+                    //Log.e("allwinnertech", "mAngle = "+mAngle);
 
-                    if (direction_init_cnt < 4)
-                    {
-                        Log.e(TAG, "direction_init_cnt" + direction_init_cnt);
-                        if (direction_init_cnt == 0)
-                        {
-                            direction_rec_0 = direction;
-                            direction_init_cnt++;
-                        }
-                        else if (direction_init_cnt == 1)
-                        {
-                            direction_rec_1 = direction;
-                            direction_init_cnt++;
-                        }
-                        else if (direction_init_cnt == 2)
-                        {
-                            direction_rec_2 = direction;
-                            direction_init_cnt++;
-                        }
-                        else if (direction_init_cnt == 3)
-                        {
-                            direction_rec_3 = direction;
-                            direction_init_cnt++;
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                    else
-                    {
-                        Log.e(TAG, "direction_rec_0 = "+direction_rec_0);
-                        Log.e(TAG, "direction_rec_1 = "+direction_rec_1);
-                        Log.e(TAG, "direction_rec_2 = "+direction_rec_2);
-                        Log.e(TAG, "direction_rec_3 = "+direction_rec_3);
-                        if (direction_init == 0xAA)
-                        {
-                            if ((direction_rec_0 + direction_rec_1 +
-                                    direction_rec_2 + direction_rec_3) >=510)
-                            {
-                                direction_init = 0xff;
-                            }
-                            else
-                            {
-                                direction_init = 0x00;
-                            }
-                            //direction_init = direction;
-                        }
-                    }
-					if (direction_init == direction)
+					if (0x0 == direction)
 					{
-						mAngle = (int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3);
-						Log.e("allwinnertech", "0'c");
+                        mSumAngle = mSumAngle + Angle_delta;
 					}
 					else
 					{
-						mAngle = 360 - ((int)(Math.acos((AA+BB-CC)/(2*A*B)) * 57.3));
-						Log.e("allwinnertech", "360'c");
+                        mSumAngle = mSumAngle - Angle_delta;
 					}
-					/*Log.e(TAG, " mViewStartX " + mViewStartX + " mViewStartY " + mViewStartY +
+					/*Log.e(TAG, " mViewCurrentX " + mViewCurrentX + " mViewCurrentY " + mViewCurrentY +
 	                        " mViewStartXRec " + mViewStartXRec + " mViewStartYRec " + mViewStartYRec +
 	                        " mAngle " + mAngle + " direction " + direction);*/
-					Log.e("allwinnertech", "mAngle " + mAngle + " direction " + direction + " direction_init " + direction_init);
+					Log.e("allwinnertech", "mSumAngle " + mSumAngle + " direction " + direction + " direction_init " + direction_init);
 	                break;
 	            default:
 	                break;
@@ -364,10 +314,10 @@ public class SuperCircleView extends View {
         Paint ringColorPaint = new Paint(mPaint);
         ringColorPaint.setStyle(Paint.Style.STROKE);
         ringColorPaint.setStrokeWidth(mRingWidth);
-        Log.e(TAG, "drawColorRing");
+        //Log.e(TAG, "drawColorRing");
         ringColorPaint.setShader(new SweepGradient(mViewCenterX, mViewCenterX, color, null));
 
-		canvas.drawCircle(mViewStartX, mViewStartY, 6, ringColorPaint);
+		canvas.drawCircle(mViewCurrentX, mViewCurrentY, 6, ringColorPaint);
 		
 		/*
         if (!isShowSelect) {
@@ -399,12 +349,12 @@ public class SuperCircleView extends View {
         ringNormalPaint.setStrokeWidth(mRingWidth);
         ringNormalPaint.setColor(mRingNormalColor);
         canvas.drawArc(mRectF, 90, 360, false, ringNormalPaint);
-        Log.e(TAG, "drawNormalRing isShowSelect " + isShowSelect);
+        //Log.e(TAG, "drawNormalRing isShowSelect " + isShowSelect);
         if (!isShowSelect) {
             return;
         }
         ringNormalPaint.setColor(mMaxCircleColor);
-        Log.e(TAG, "mSelect = "+mSelect);
+        //Log.e(TAG, "mSelect = "+mSelect);
         for (int i = 0; i < mSelect; i++) {
             canvas.drawArc(mRectF, 90 + (i * mRingAngleWidth + (i) * mSelectAngle), mSelectAngle, false, ringNormalPaint);
         }
@@ -416,7 +366,7 @@ public class SuperCircleView extends View {
      * @param i
      */
     public void setSelect(int i) {
-        Log.e(TAG, "setSelect");
+        //Log.e(TAG, "setSelect");
         this.mSelectRing = i;
         this.invalidate();
     }
