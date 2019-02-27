@@ -57,6 +57,29 @@ public class CustomMode_yuntai extends AppCompatActivity
     public static int max_shot_times_abpoint;/*save after abpoint setting*/
     public static int max_shot_times;/*received from mcu*/
     public BluetoothLeService mBluetoothLeService;
+    public static float mViewStartXRec;
+    public static float mViewStartYRec;
+    public static float mViewStartXPrev;
+    public static float mViewStartYPrev;
+    public static float mViewCurrentX; //圆弧起始点X
+    public static float mViewCurrentY; //圆弧起始点Y
+    public static float mViewStopX; //圆弧终点X
+    public static float mViewStopY; //圆弧终点Y
+
+    public static double AA; //余弦定理A边平方
+    public static double BB; //余弦定理B边平方
+    public static double CC; //余弦定理C边平方
+
+    public static double A; //余弦定理A边
+    public static double B; //余弦定理B边
+    public static int mSumAngle;
+    public static int mSumAngle_final;
+    public static int mViewZeroAngleX;   //view宽的中心点
+    public static int mViewZeroAngleY;   //view高的中心点
+    private int mAngle; //余弦定理B边
+    private int direction = 0x00;
+    private int direction_init = 0x0;
+    private int Angle_delta;
     private boolean mConnected = false;
     boolean connect_status_bit=false;
     private EditText EtJiaodu;
@@ -128,55 +151,168 @@ public class CustomMode_yuntai extends AppCompatActivity
         mSuperCircleView.setShowSelect(false);
 
 
+	mViewZeroAngleX = mSuperCircleView.mViewCenterX + mSuperCircleView.mMinRadio + (int)(mSuperCircleView.mRingWidth / 2);
+	mViewZeroAngleY = mSuperCircleView.mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
+	mViewCurrentX = mViewZeroAngleX;
+        mViewCurrentY = mViewZeroAngleY;
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mViewCenterX = "+mSuperCircleView.mViewCenterX);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mMinRadio = "+mSuperCircleView.mMinRadio);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mRingWidth = "+mSuperCircleView.mRingWidth);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mViewCenterY = "+mSuperCircleView.mViewCenterY);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mMinRadio = "+mSuperCircleView.mMinRadio);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mRingWidth = "+mSuperCircleView.mRingWidth);
+	Log.e(CUSTOMMODE_YUNTAI_TAG, "mViewZeroAngleX = "+mViewZeroAngleX);
+        Log.e(CUSTOMMODE_YUNTAI_TAG, "mViewZeroAngleY = "+mViewZeroAngleY);
+
         mSuperCircleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 String tx_string;
-                switch(motionEvent.getAction())
-                {
-                    case MotionEvent.ACTION_MOVE:
-                        Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
-                                + " mSumAngle = "+mSuperCircleView.mSumAngle_final + " direction_init = "+mSuperCircleView.direction_init);
+                float Action_x = motionEvent.getX();
+                float Action_y = motionEvent.getY();
+                float distance;
 
-                        String str_direction;
-                        if (mSuperCircleView.direction_init == 0xFF)
-                        {
-                            str_direction = "FF";
-                            textView.setText("逆时针:"+mSuperCircleView.mSumAngle_final);
-                        }
-                        else
-                        {
-                            str_direction = "00";
-                            textView.setText("顺时针:"+mSuperCircleView.mSumAngle_final);
-                        }
+                distance = (float) Math.sqrt((Action_x - mSuperCircleView.mViewCenterX) * (Action_x - mSuperCircleView.mViewCenterX) +
+                        (Action_y - mSuperCircleView.mViewCenterY) * (Action_y - mSuperCircleView.mViewCenterY));
+                //Log.e(TAG, "distance " + distance);
+		/*
+        if (Action_x >= (mViewCenterX - mMinRadio - mRingWidth / 2 - 50)
+            && Action_x <= (mViewCenterX + mMinRadio + mRingWidth / 2 + 50)
+            && Action_y >= (mViewCenterY - mMinRadio - mRingWidth / 2 - 50)
+            && Action_y <= (mViewCenterY + mMinRadio + mRingWidth / 2 + 50)) {
+        */
+                if ((distance <= (mSuperCircleView.mMinRadio + mSuperCircleView.mRingWidth / 2 + 100)) && distance >= 50) {
+			/*
+            Log.e(TAG, "MotionEvent " + event.getAction());
+            Log.e(TAG, "Action_x " + Action_x);
+            Log.e(TAG, "Action_y " + Action_y);
 
-                        tx_string = "0093020401" +
-                                String.format("%02x", (mSuperCircleView.mAngle % 256)) +
-                                String.format("%02x", (mSuperCircleView.mAngle / 256)) +
-                                str_direction;
-                        if(!connect_status_bit)
-                            return false;
-                        Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
-                        mBluetoothLeService.txxx(tx_string);
-                        break;
-                    case MotionEvent.ACTION_UP:
+			Log.e(TAG, "mViewCenterX " + mViewCenterX);
+            Log.e(TAG, "mMinRadio " + mMinRadio);
+            Log.e(TAG, "mRingWidth / 2 " + mRingWidth / 2);
 
-						tx_string = "0093020403000000";
-						Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
-                        if(!connect_status_bit)
-                            return false;
-						mBluetoothLeService.txxx(tx_string);
-                        
-                        break;
-                    default:
-                        break;
+			Log.e(TAG, "mViewCenterY " + mViewCenterY);
+            Log.e(TAG, "mMinRadio " + mMinRadio);
+            Log.e(TAG, "mRingWidth / 2 " + mRingWidth / 2);
+			*/
+
+                    //canvas.drawCircle(20, 60, circle);
+
+                    mViewStartXPrev = mViewCurrentX;
+                    mViewStartYPrev = mViewCurrentY;
+                    mViewCurrentX = (((Action_x - mSuperCircleView.mViewCenterX) * (mSuperCircleView.mMinRadio + mSuperCircleView.mRingWidth / 2)) / distance)
+                            + mSuperCircleView.mViewCenterX;
+                    mViewCurrentY = (((Action_y - mSuperCircleView.mViewCenterY) * (mSuperCircleView.mMinRadio + mSuperCircleView.mRingWidth / 2)) / distance)
+                            + mSuperCircleView.mViewCenterY;
+                    //Log.e(TAG, "mViewCurrentX " + mViewCurrentX);
+                    //Log.e(TAG, "mViewCurrentY " + mViewCurrentY);
+                    //this.invalidate();
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            //mViewCurrentX = Action_x;
+                            //mViewCurrentY = Action_y;
+                            mViewStartXRec = mViewCurrentX;
+                            mViewStartYRec = mViewCurrentY;
+                            mSumAngle = 0;
+                            direction = 0;
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            //mViewStopX = Action_x;
+                            //mViewStopY = Action_y;
+                            Log.e(CUSTOMMODE_YUNTAI_TAG, "###########################");
+                            // cos(<C) = (a*a + b*b -c*c) / (2*a*b)
+                            AA = ((mViewCurrentX - mSuperCircleView.mViewCenterX) * (mViewCurrentX - mSuperCircleView.mViewCenterX) +
+                                    (mViewCurrentY - mSuperCircleView.mViewCenterY) * (mViewCurrentY - mSuperCircleView.mViewCenterY));
+                            //Log.e(TAG, "AA " + AA);
+                            BB = ((mViewStartXPrev - mSuperCircleView.mViewCenterX) * (mViewStartXPrev - mSuperCircleView.mViewCenterX) +
+                                    (mViewStartYPrev - mSuperCircleView.mViewCenterY) * (mViewStartYPrev - mSuperCircleView.mViewCenterY));
+                            //Log.e(TAG, "BB " + BB);
+                            CC = ((mViewCurrentX - mViewStartXPrev) * (mViewCurrentX - mViewStartXPrev) +
+                                    (mViewCurrentY - mViewStartYPrev) * (mViewCurrentY - mViewStartYPrev));
+                            //Log.e(TAG, "CC " + CC);
+                            A = Math.sqrt(AA);
+                            //Log.e(TAG, "A" + A);
+                            B = Math.sqrt(BB);
+                            //Log.e(TAG, "B" + B);
+
+                            direction = (((mViewStartXPrev - mSuperCircleView.mViewCenterX) * (mViewCurrentY - mSuperCircleView.mViewCenterY) -
+                                    (mViewStartYPrev - mSuperCircleView.mViewCenterY) * (mViewCurrentX - mSuperCircleView.mViewCenterX)) > 0) ? (0x0) : (0xff);
+
+                            Angle_delta = (int) (Math.acos((AA + BB - CC) / (2 * A * B)) * 57.3);
+                            //Log.e("allwinnertech", "mAngle = "+mAngle);
+
+                            if (0x0 == direction) {
+                                mSumAngle = mSumAngle + Angle_delta;
+                            } else {
+                                mSumAngle = mSumAngle - Angle_delta;
+                            }
+			/*Log.e(TAG, " mViewCurrentX " + mViewCurrentX + " mViewCurrentY " + mViewCurrentY +
+	                        " mViewStartXRec " + mViewStartXRec + " mViewStartYRec " + mViewStartYRec +
+	                        " mAngle " + mAngle + " direction " + direction);*/
+                            Log.e("allwinnertech", "mSumAngle " + mSumAngle + " direction " + direction + " direction_init " + direction_init);
+                            Log.e(CUSTOMMODE_YUNTAI_TAG, "mSuperCircleView setOnTouchListener"
+                                    + " mSumAngle = " + mSumAngle + " direction_init = " + mSuperCircleView.direction_init);
+
+                            String str_direction;
+                            if (direction == 0xFF) {
+                                str_direction = "FF";
+                                textView.setText("逆时针:" + mSumAngle_final);
+                            } else {
+                                str_direction = "00";
+                                textView.setText("顺时针:" + mSumAngle_final);
+                            }
+
+                            tx_string = "0093020401" +
+                                    String.format("%02x", (mSuperCircleView.mAngle % 256)) +
+                                    String.format("%02x", (mSuperCircleView.mAngle / 256)) +
+                                    str_direction;
+                            if (!connect_status_bit)
+                                return false;
+                            Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+                            mBluetoothLeService.txxx(tx_string);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            //textView = ((TextView)findViewById(R.id.tv)).setText("abc");;
+                            //textView.setText(""+mAngle);
+
+                            if (mSumAngle >= 360) {
+                                mSumAngle = 360;
+                            }
+
+                            if (mSumAngle < -360) {
+                                mSumAngle = -360;
+                            }
+                            if (mSumAngle >= 0) {
+                                mSumAngle_final = mSumAngle;
+                                direction_init = 0x0;
+                                Log.e("sushiyu1", "mSumAngle_final " + mSumAngle_final);
+                                Log.e("sushiyu1", "direction_init " + direction_init);
+                            } else {
+                                mSumAngle_final = -mSumAngle;
+                                direction_init = 0xff;
+                                Log.e("sushiyu1", "mSumAngle_final " + mSumAngle_final);
+                                Log.e("sushiyu1", "direction_init " + direction_init);
+                            }
+                            mViewStartXRec = 0;
+                            mViewStartYRec = 0;
+
+                            //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
+                            tx_string = "0093020403000000";
+                            Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);
+                            if (!connect_status_bit)
+                                return false;
+                            mBluetoothLeService.txxx(tx_string);
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 //textView.setText(mSuperCircleView.mAngle);
                 return false;
-            }
+	        }
 
-        });
+            });
         //mSuperCircleView.setSelect((int) (360 * (20 / 100f)));
         /*
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
