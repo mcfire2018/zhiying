@@ -99,7 +99,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     private int yunxing_second;
     private boolean screen_toggle;
 
-    private boolean debug = true;
+    private boolean debug = false;
     SuperCircleView mSuperCircleView;
     TextView textView;
 
@@ -258,7 +258,7 @@ public class CustomMode_yuntai extends AppCompatActivity
                                 Log.e("sushiyu1", "mSumAngle_curr " + mSumAngle_curr);
                             } else {
                                 mSumAngle_curr = -mSumAngle;
-                                direction_final = 0xff;
+                                //direction_final = 0xff;
                                 Log.e("sushiyu1", "mSumAngle_curr " + mSumAngle_curr);
                             }
                             String str_direction;
@@ -275,9 +275,12 @@ public class CustomMode_yuntai extends AppCompatActivity
                             tx_string = "0093020401" +
                                     //String.format("%02x", (mSuperCircleView.mAngle % 256)) +
                                     //String.format("%02x", (mSuperCircleView.mAngle / 256)) +
-                                    String.format("%02x", (mSumAngle % 256)) +
-                                    String.format("%02x", (mSumAngle / 256)) +
+                                    String.format("%02x", (mSumAngle_curr % 256)) +
+                                    String.format("%02x", (mSumAngle_curr / 256)) +
                                     str_direction;
+                            Log.e("sushiyu1", "mSumAngle 0" + mSumAngle_curr);
+                            Log.e("sushiyu1", "String.format 1" + String.format("%02x", (mSumAngle_curr % 256)));
+                            Log.e("sushiyu1", "String.format 2" + String.format("%02x", (mSumAngle_curr / 256)));
                             if (!connect_status_bit)
                                 return false;
                             Log.e(CUSTOMMODE_YUNTAI_TAG, tx_string);

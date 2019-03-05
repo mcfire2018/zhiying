@@ -37,6 +37,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.graphics.Paint;
 
 import java.util.List;
 import java.util.Locale;
@@ -145,9 +146,10 @@ public class VedioShot_yuntai extends AppCompatActivity
                 return true;
             }
         });
-        Tvjiaodu = (TextView) findViewById(R.id.jiaodu_input_yuntai);
-        Tvjiaodu.setText("00");
-        Tvjiaodu.setOnClickListener(new View.OnClickListener() {
+	Tvjiaodu = (TextView) findViewById(R.id.jiaodu_input_yuntai);
+	Tvjiaodu.setText("00");
+	Tvjiaodu.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+	Tvjiaodu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Etjiaodu_input = new EditText(VedioShot_yuntai.this);

@@ -35,6 +35,9 @@ public class SuperCircleView extends View {
     private int mMaxCircleColor;    //最外面圆的颜色
     private int mRingNormalColor;    //默认圆环的颜色
     private Paint mPaint;
+    private int SupViewZeroAngleX; 
+    private int SupViewZeroAngleY; 
+    private static boolean init = false; 
     private int color[] = new int[3];   //渐变颜色
 
 
@@ -108,6 +111,8 @@ public class SuperCircleView extends View {
         Log.e(TAG, "mViewCenterY = "+mViewCenterY);
         Log.e(TAG, "mMinRadio = "+mMinRadio);
         Log.e(TAG, "mRingWidth = "+mRingWidth);
+	SupViewZeroAngleX = mViewCenterX + mMinRadio + (int)(mRingWidth / 2);
+	SupViewZeroAngleY = mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
         mRectF = new RectF(mViewCenterX - mMinRadio - mRingWidth / 2,
                 mViewCenterY - mMinRadio - mRingWidth / 2,
                 mViewCenterX + mMinRadio + mRingWidth / 2,
@@ -144,13 +149,20 @@ public class SuperCircleView extends View {
      * @param canvas
      */
     private void drawColorRing(Canvas canvas) {
-        Paint ringColorPaint = new Paint(mPaint);
-        ringColorPaint.setStyle(Paint.Style.STROKE);
-        ringColorPaint.setStrokeWidth(mRingWidth);
-        //Log.e(TAG, "drawColorRing");
-        ringColorPaint.setShader(new SweepGradient(mViewCenterX, mViewCenterX, color, null));
-
-		canvas.drawCircle(CustomMode_yuntai.mViewCurrentX, CustomMode_yuntai.mViewCurrentY, 6, ringColorPaint);
+	    Paint ringColorPaint = new Paint(mPaint);
+	    ringColorPaint.setStyle(Paint.Style.STROKE);
+	    ringColorPaint.setStrokeWidth(mRingWidth);
+	    //Log.e(TAG, "drawColorRing");
+	    ringColorPaint.setShader(new SweepGradient(mViewCenterX, mViewCenterX, color, null));
+	    if (init == false)
+	    {
+		    canvas.drawCircle(SupViewZeroAngleX, SupViewZeroAngleY, 6, ringColorPaint);
+		    init = true;
+	    }
+	    else
+	    {
+		    canvas.drawCircle(CustomMode_yuntai.mViewCurrentX , CustomMode_yuntai.mViewCurrentY, 6, ringColorPaint);
+	    }
 		
 		/*
         if (!isShowSelect) {
