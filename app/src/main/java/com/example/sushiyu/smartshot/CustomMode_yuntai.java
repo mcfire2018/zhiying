@@ -54,7 +54,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static final String CUSTOMMODE_YUNTAI_TAG = "mcfire_custommode_yuntai";
-    public static final String TAG = "allwinnertech";
+    public static final String TAG = "SuperCircleView";
     public static int max_shot_times_abpoint;/*save after abpoint setting*/
     public static int max_shot_times;/*received from mcu*/
     public BluetoothLeService mBluetoothLeService;
@@ -66,6 +66,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     public static float mViewCurrentY; //圆弧起始点Y
     public static float mViewStopX; //圆弧终点X
     public static float mViewStopY; //圆弧终点Y
+    public static boolean ui_init = false; //圆弧起始点X
 
     public static double AA; //余弦定理A边平方
     public static double BB; //余弦定理B边平方
@@ -157,6 +158,9 @@ public class CustomMode_yuntai extends AppCompatActivity
 	mViewZeroAngleY = mSuperCircleView.mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
 	mViewCurrentX = mViewZeroAngleX;
         mViewCurrentY = mViewZeroAngleY;
+	Log.e(TAG, "custom init done");
+	Log.e(TAG, " "+mViewZeroAngleX+" "+mViewZeroAngleY+" "+mViewCurrentX+" "+mViewCurrentY);
+	ui_init = true;        	
         Log.e(CUSTOMMODE_YUNTAI_TAG, "mViewCenterX = "+mSuperCircleView.mViewCenterX);
         Log.e(CUSTOMMODE_YUNTAI_TAG, "mMinRadio = "+mSuperCircleView.mMinRadio);
         Log.e(CUSTOMMODE_YUNTAI_TAG, "mRingWidth = "+mSuperCircleView.mRingWidth);
@@ -395,6 +399,7 @@ public class CustomMode_yuntai extends AppCompatActivity
             }
         });
         //updateConnectionState(R.string.connecting);
+        Log.e(TAG, "onCreate end");
         Log.e(CUSTOMMODE_YUNTAI_TAG, "连接中");
     }
 
@@ -733,6 +738,7 @@ public class CustomMode_yuntai extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.e(CUSTOMMODE_YUNTAI_TAG, "delayshot onResume");
+        Log.e(TAG, "delayshot onResume");
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {

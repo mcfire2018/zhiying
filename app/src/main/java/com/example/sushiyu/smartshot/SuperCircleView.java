@@ -37,7 +37,7 @@ public class SuperCircleView extends View {
     private Paint mPaint;
     private int SupViewZeroAngleX; 
     private int SupViewZeroAngleY; 
-    private static boolean init = false; 
+    private static int init = 0; 
     private int color[] = new int[3];   //渐变颜色
 
 
@@ -101,16 +101,17 @@ public class SuperCircleView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
+        Log.e(TAG, "onLayout called");
         mViewWidth = getMeasuredWidth();
         mViewHeight = getMeasuredHeight();
         mViewCenterX = mViewWidth / 2;
         mViewCenterY = mViewHeight / 2;
-        Log.e(TAG, "mViewCenterX = "+mViewCenterX);
-        Log.e(TAG, "mMinRadio = "+mMinRadio);
-        Log.e(TAG, "mRingWidth = "+mRingWidth);
-        Log.e(TAG, "mViewCenterY = "+mViewCenterY);
-        Log.e(TAG, "mMinRadio = "+mMinRadio);
-        Log.e(TAG, "mRingWidth = "+mRingWidth);
+        //Log.e(TAG, "mViewCenterX = "+mViewCenterX);
+        //Log.e(TAG, "mMinRadio = "+mMinRadio);
+        //Log.e(TAG, "mRingWidth = "+mRingWidth);
+        //Log.e(TAG, "mViewCenterY = "+mViewCenterY);
+        //Log.e(TAG, "mMinRadio = "+mMinRadio);
+        //Log.e(TAG, "mRingWidth = "+mRingWidth);
 	SupViewZeroAngleX = mViewCenterX + mMinRadio + (int)(mRingWidth / 2);
 	SupViewZeroAngleY = mViewCenterY;// + mMinRadio + (int)(mRingWidth / 2);
         mRectF = new RectF(mViewCenterX - mMinRadio - mRingWidth / 2,
@@ -128,6 +129,7 @@ public class SuperCircleView extends View {
          * 显示彩色断大于总共的段数是错误的
          */
         //Log.e(TAG, "onDraw isShowSelect " + isShowSelect);
+        Log.e(TAG, "onDraw called");
 
         if (isShowSelect && mSelectRing > mSelect) {
             return;
@@ -152,15 +154,17 @@ public class SuperCircleView extends View {
 	    Paint ringColorPaint = new Paint(mPaint);
 	    ringColorPaint.setStyle(Paint.Style.STROKE);
 	    ringColorPaint.setStrokeWidth(mRingWidth);
-	    //Log.e(TAG, "drawColorRing");
 	    ringColorPaint.setShader(new SweepGradient(mViewCenterX, mViewCenterX, color, null));
-	    if (init == false)
+	    //if (CustomMode_yuntai.ui_init == false)
+	    if (init < 2)
 	    {
+	            Log.e(TAG, "ui_init false");
 		    canvas.drawCircle(SupViewZeroAngleX, SupViewZeroAngleY, 6, ringColorPaint);
-		    init = true;
+                    init++; 
 	    }
 	    else
 	    {
+	            Log.e(TAG, "ui_init true");
 		    canvas.drawCircle(CustomMode_yuntai.mViewCurrentX , CustomMode_yuntai.mViewCurrentY, 6, ringColorPaint);
 	    }
 		

@@ -437,13 +437,13 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                     {
 
                         panoramic_btn_start.setBackgroundResource(R.drawable.stop);
-                        panoramic_start_press_flag = true;
+                        panoramic_start_press_flag = false;
                     }
                     else if(tmp_str.equals("00"))
                     {
 
                         panoramic_btn_start.setBackgroundResource(R.drawable.start);
-                        panoramic_start_press_flag = false;
+                        panoramic_start_press_flag = true;
                     }
                     get_param_success = true;
                     timer.cancel();
