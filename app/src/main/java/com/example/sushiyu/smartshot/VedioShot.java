@@ -330,8 +330,9 @@ public class VedioShot extends AppCompatActivity
             private int run_speed;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress_value, boolean fromUser) {
-                run_speed = progress_value;
-                speed_current.setText(""+(run_speed+1));
+                run_speed = progress_value + 1;
+                Log.e(VEDIOSHOT_TAG, "progress_value = " + progress_value);
+                speed_current.setText(""+(run_speed));
             }
 
             @Override
@@ -341,12 +342,11 @@ public class VedioShot extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-                Log.e(VEDIOSHOT_TAG, "progress_value = "+run_speed);
 
                 String tx_string;
                 if (run_speed >= 100)
                 {
-                    run_speed = 99;
+                    run_speed = 100;
                 }
                 if (run_speed < 16)
                 {

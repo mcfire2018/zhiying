@@ -319,8 +319,8 @@ public class VedioShot_yuntai extends AppCompatActivity
 			private int run_speed;
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress_value, boolean fromUser) {
-				run_speed = progress_value;
-				speed_current.setText(""+(run_speed+1));
+				run_speed = progress_value + 1;
+				speed_current.setText(""+(run_speed));
 			}
 
 			@Override
@@ -337,7 +337,7 @@ public class VedioShot_yuntai extends AppCompatActivity
 				String tx_string;
 				if (run_speed >= 100)
 				{
-					run_speed = 99;
+					run_speed = 100;
 				}
 				if (run_speed < 16)
 				{
@@ -875,7 +875,7 @@ public class VedioShot_yuntai extends AppCompatActivity
     protected void onPause() {
         Log.e(VEDIOSHOT_YUNTAI_TAG, "onPause");
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+        //unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
