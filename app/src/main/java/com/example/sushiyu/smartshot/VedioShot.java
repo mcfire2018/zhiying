@@ -482,7 +482,7 @@ public class VedioShot extends AppCompatActivity
                 MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
                 mConnected = false;
                 mBluetoothLeService.disconnect(); //20181111
-                unregisterReceiver(mGattUpdateReceiver);
+                //unregisterReceiver(mGattUpdateReceiver);
                 unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
@@ -929,6 +929,23 @@ public class VedioShot extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.e(VEDIOSHOT_TAG, "onResume");
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        {
+                Log.e(VEDIOSHOT_TAG, "Connection Lost");
+                Log.e(VEDIOSHOT_TAG, "ACTION_GATT_DISCONNECTED");
+                MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
+                mConnected = false;
+                //mBluetoothLeService.disconnect(); //20181111
+                //unregisterReceiver(mGattUpdateReceiver);
+                unbindService(mServiceConnection);
+                mBluetoothLeService = null;
+                timer.cancel();
+                timer=null;
+                Intent intent1 = new Intent(VedioShot.this,
+                                MainActivity.class);
+                startActivity(intent1);
+                connect_status_bit=false;
+        }
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
 
@@ -942,7 +959,7 @@ public class VedioShot extends AppCompatActivity
     protected void onPause() {
         Log.e(VEDIOSHOT_TAG, "onPause");
         super.onPause();
-        //unregisterReceiver(mGattUpdateReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
