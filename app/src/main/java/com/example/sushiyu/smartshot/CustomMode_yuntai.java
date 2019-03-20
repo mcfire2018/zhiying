@@ -474,7 +474,7 @@ public class CustomMode_yuntai extends AppCompatActivity
                 connect_status_bit=true;
                 mConnected = true;
                 //mBluetoothLeService.disconnect();
-                unregisterReceiver(mGattUpdateReceiver);
+                //unregisterReceiver(mGattUpdateReceiver);
                 unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
@@ -739,6 +739,23 @@ public class CustomMode_yuntai extends AppCompatActivity
         super.onResume();
         Log.e(CUSTOMMODE_YUNTAI_TAG, "delayshot onResume");
         Log.e(TAG, "delayshot onResume");
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        {
+                Log.e(CUSTOMMODE_YUNTAI_TAG, "Connection Lost");
+                Log.e(CUSTOMMODE_YUNTAI_TAG, "ACTION_GATT_DISCONNECTED");
+                MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
+                mConnected = false;
+                //mBluetoothLeService.disconnect(); //20181111
+                //unregisterReceiver(mGattUpdateReceiver);
+                unbindService(mServiceConnection);
+                mBluetoothLeService = null;
+                timer.cancel();
+                timer=null;
+                Intent intent1 = new Intent(CustomMode_yuntai.this,
+                                MainActivity.class);
+                startActivity(intent1);
+                connect_status_bit=false;
+        }
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
