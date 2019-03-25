@@ -659,11 +659,11 @@ public class VedioShot extends AppCompatActivity
             scheduledExecutor.shutdownNow();
             scheduledExecutor = null;
         }
-        cur_progress = seekbar_speed.getProgress();
+        cur_progress = seekbar_speed.getProgress() + 1;
         Log.e(VEDIOSHOT_TAG, "post progress_value = "+cur_progress);
         if (cur_progress >= 100)
         {
-            cur_progress = 99;
+            cur_progress = 100;
         }
         if (cur_progress < 16)
         {
