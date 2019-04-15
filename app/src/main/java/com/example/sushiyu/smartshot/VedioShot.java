@@ -449,6 +449,7 @@ public class VedioShot extends AppCompatActivity
                     Log.e(VEDIOSHOT_TAG, "VedioShoot Connect! " +MainActivity.connect_status_bit);
                     if (MainActivity.connect_status_bit)
                     {
+                        Log.e(VEDIOSHOT_TAG, "tx 0003010100000000");
                         mBluetoothLeService.txxx("0003010100000000");
                     }
                     else
@@ -755,6 +756,7 @@ public class VedioShot extends AppCompatActivity
                 if (MainActivity.connect_status_bit)
                 {
                     Log.e(VEDIOSHOT_TAG, "retry "+get_param_success);
+                    Log.e(VEDIOSHOT_TAG, "tx 0003010100000000");
                     mBluetoothLeService.txxx("0003010100000000");
                 }
                 else

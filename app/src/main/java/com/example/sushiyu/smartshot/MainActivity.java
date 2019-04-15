@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity
     private ImageButton img_btn_scan;
     private TextView scanning_tv;
     private boolean scanning = false;
+    private Intent gattServiceIntent;
+    private static boolean gatt_service_discovered = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,7 +217,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     Log.e(MAINACTIVITY_TAG, "img_btn_scan mScanning = "+mScanning);
                     Log.e(MAINACTIVITY_TAG, "img_btn_scan mConnecting = "+mConnecting);
-                    /*这里是为了扫描时隐藏扫面按钮，不让用户提前结束*/
                     return false;
                 }
                 Intent intent1 = new Intent(MainActivity.this,
@@ -237,9 +239,19 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 if (mDevListAdapter.getCount() > 0) {
-                    Log.e(MAINACTIVITY_TAG, "BLE List Item Click");
+                    Log.e("kkkkk", "---------------------BLE List Item Click---------------------");
+                    gatt_service_discovered = false; 
                     if (mBluetoothLeService != null)
+                    {
+                        Log.e(MAINACTIVITY_TAG, "clear previous connection");
                         mBluetoothLeService.disconnect();//20181111
+                        Log.e(MAINACTIVITY_TAG, "disconnect");
+                        //unbindService(mServiceConnection);
+                        //Log.e(MAINACTIVITY_TAG, "unbind");
+                        unregisterReceiver(mGattUpdateReceiver);
+                        Log.e(MAINACTIVITY_TAG, "unregister");
+                    }
+                    Log.e(MAINACTIVITY_TAG, "start to connect to a new le device");
                     lv_bleList.setVisibility(View.INVISIBLE);
                     BluetoothDevice device_select = mDevListAdapter.getItem(position);
                     if (device_select == null) {
@@ -248,13 +260,11 @@ public class MainActivity extends AppCompatActivity
                     }
                     Toast.makeText(MainActivity.this, R.string.Connecting, Toast.LENGTH_SHORT).show();
 
-                    mScanning = false;/*这里可能写的不太好，mScanning的赋值没有统一在scanLeDevice中执行*/
+                    mScanning = false;
                     scanLeDevice(false);
                     mConnecting = true;
-                    /*扫面按钮上面文字描述在连接过程中隐藏*/
-                    //scanning_tv.setText("");
 
-                    /*
+                   /*
                     Log.e(MAINACTIVITY_TAG, device_select.getName());
                     Log.e(MAINACTIVITY_TAG, device_select.getAddress());
                     Intent intent1 = new Intent(MainActivity.this,
@@ -277,11 +287,15 @@ public class MainActivity extends AppCompatActivity
                     //mHandler = new Handler();
                     timer.schedule(task, 10, 100);
                     boolean sg;
-                    Intent gattServiceIntent = new Intent(MainActivity.this, BluetoothLeService.class);
+                    gattServiceIntent = new Intent(MainActivity.this, BluetoothLeService.class);
 
                     sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
                     registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
                     //updateConnectionState(R.string.connecting);
+                }
+                else
+                {
+                    Log.e(MAINACTIVITY_TAG, "---------------------------------------");
                 }
             }
         });
@@ -354,11 +368,13 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             wait_receive_mcu_msg_to--;
             Log.e(MAINACTIVITY_TAG, "task_wait_mcu cnt = "+wait_receive_mcu_msg_to);
-            if (wait_receive_mcu_msg_to == 23)
+            //if (wait_receive_mcu_msg_to == 23)
+            if (wait_receive_mcu_msg_to == 25)
             {
                 mBluetoothLeService.gatt_discoverServices();
             }
-            if (wait_receive_mcu_msg_to < 19)
+            //if (wait_receive_mcu_msg_to < 19)
+            if (gatt_service_discovered == true)
             {
                 Log.e(MAINACTIVITY_TAG, " task_wait_mcu 0 cnt = "+wait_receive_mcu_msg_to);
 
@@ -450,13 +466,14 @@ public class MainActivity extends AppCompatActivity
                 //delay(3000);
                 //Log.e(MAINACTIVITY_TAG, "tx 0093040100000000");
                 //delay(1000);
-                timer_wait_mcu.schedule(task_wait_mcu, 1, 500);
+                timer_wait_mcu.schedule(task_wait_mcu, 1, 20);
                 wait_receive_mcu_msg_to = 26;
                 //mBluetoothLeService.txxx("0093040100000000");
 
 
                 //drawer.setClickable(false);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                gatt_service_discovered = false; 
                 mConnected = false;
                 MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
                 mBluetoothLeService.disconnect();
@@ -609,11 +626,10 @@ public class MainActivity extends AppCompatActivity
         Log.e(MAINACTIVITY_TAG, "FFF");
         if( gattServices.size()>0&&mBluetoothLeService.get_connected_status( gattServices )>=4 )
         {
-            Log.e(MAINACTIVITY_TAG, "caonima");
             if(mConnected)
             {
                 Log.e(MAINACTIVITY_TAG, "connect  aaa");
-
+                gatt_service_discovered = true; 
                 //show_view( true );
                 mBluetoothLeService.enable_JDY_ble(true);
                 try {
@@ -661,7 +677,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         //if (abpoint_ok == 0)
-        if (wait_receive_mcu_msg_to <= 25 && wait_receive_mcu_msg_to >=19)
+        //if (wait_receive_mcu_msg_to <= 25 && wait_receive_mcu_msg_to >=19)
+        if (id == R.id.scan) {
+            /*任意界面只要按左菜单扫描按钮就会重新扫描*/
+            //if (!connect_status_bit)
+            {
+                Intent intent1 = new Intent(MainActivity.this,
+                    MainActivity.class);
+                intent1.putExtra(VedioShot.EXTRAS_DEVICE_NAME,
+                        mDeviceName);
+                intent1.putExtra(VedioShot.EXTRAS_DEVICE_ADDRESS,
+                        mDeviceAddress);
+                startActivity(intent1);
+            }
+        }
+        if (wait_receive_mcu_msg_to != 26)
         {
             /*2018.11.04开始，左菜单按键不需要连接状态下才能按下*/
             return true;
@@ -734,18 +764,6 @@ public class MainActivity extends AppCompatActivity
                     mDeviceAddress);
             startActivity(intent1);
 
-        } else if (id == R.id.scan) {
-            /*任意界面只要按左菜单扫描按钮就会重新扫描*/
-            //if (!connect_status_bit)
-            {
-                Intent intent1 = new Intent(MainActivity.this,
-                    MainActivity.class);
-                intent1.putExtra(VedioShot.EXTRAS_DEVICE_NAME,
-                        mDeviceName);
-                intent1.putExtra(VedioShot.EXTRAS_DEVICE_ADDRESS,
-                        mDeviceAddress);
-                startActivity(intent1);
-            }
         } else if (id == btn_quanjing) {
             timer.cancel();
             Log.e(MAINACTIVITY_TAG, "btn_quanjing");
@@ -859,15 +877,17 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi,
                              byte[] scanRecord) {
+            //Log.e(MAINACTIVITY_TAG, "onLeScan entry");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     //if ((device.getName().substring(0,2).equals("MI"))||
                             //(device.getName().substring(0,2).equals("ZY")))
+                    //Log.e(MAINACTIVITY_TAG, "device found : " + device.getName());
                     if (device.getName() != null)
                     {
                         if (((device.getName().substring(0,3).equals("ZY-"))
-                                ||(device.getName().substring(0,3).equals("MLT"))
+                                //||(device.getName().substring(0,3).equals("MLT"))
                                 &&(!(device.getAddress().equals(mDeviceAddress)))))
                         {
                             mDevListAdapter.addDevice(device);

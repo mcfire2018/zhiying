@@ -114,7 +114,7 @@ public class BluetoothLeService extends Service {
 
 
     public void gatt_discoverServices(){
-        Log.i(TAG, "Attempting to start service discovery:" +
+        Log.e("mcfire", "Attempting to start service discovery:" +
                 mBluetoothGatt.discoverServices());
     }
 
@@ -496,10 +496,11 @@ public class BluetoothLeService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.e("mcfire", "broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)");
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
-                Log.e("sushiyu", "onServicesDiscovered received: " + status);
+                Log.e("mcfire", "onServicesDiscovered received: " + status);
             }
         }
 

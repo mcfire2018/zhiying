@@ -84,6 +84,7 @@ public class DelayShot_yuntai extends AppCompatActivity
     private int baoguang_minute;
     private int baoguang_second;
     private boolean screen_toggle;
+    private Intent gattServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
                 MainActivity.btn_zidingyi, "自定义拍摄");
         boolean sg;
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        gattServiceIntent = new Intent(this, BluetoothLeService.class);
         sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         timer.schedule(task, 1000, 1000);
@@ -185,7 +186,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                                 jiaodu_num_low = String.format("%02x", (jiaodu_num % 256));
                                 tx_string="00930202"+"01"+jiaodu_num_low + jiaodu_num_high+"00";
                                 TvJiaodu.setText(""+jiaodu_num);
-                                if(!connect_status_bit)
+                                if(!MainActivity.connect_status_bit)
                                     return;
                                 mBluetoothLeService.txxx(tx_string);
                                 Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -219,7 +220,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                                 String.format("%02x", zhuge_second)+
                                 String.format("%02x", zhuge_minute)+
                                 String.format("%02x", zhuge_hour);
-                        if(!connect_status_bit)
+                        if(!MainActivity.connect_status_bit)
                             return;
                         mBluetoothLeService.txxx(tx_string);
                         Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -252,7 +253,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                                 String.format("%02x", baoguang_second)+
                                 String.format("%02x", baoguang_minute)+
                                 String.format("%02x", baoguang_hour);
-                        if(!connect_status_bit)
+                        if(!MainActivity.connect_status_bit)
                             return;
                         mBluetoothLeService.txxx(tx_string);
                         Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -317,7 +318,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                                 str_shoot_times_low = String.format("%02x", (shoot_times % 256));
                                 tx_string="00930202"+"04"+str_shoot_times_low + str_shoot_times_high+"00";
                                 TvShootTimes.setText(""+shoot_times);
-                                if(!connect_status_bit)
+                                if(!MainActivity.connect_status_bit)
                                     return;
                                 mBluetoothLeService.txxx(tx_string);
                                 Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -344,7 +345,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                     String tx_string;
 					tx_string = "00930202"+"02"+"000000";
                     //tx_string="0093010205000000";
-                    if(!connect_status_bit)
+                    if(!MainActivity.connect_status_bit)
                         return ;
                     mBluetoothLeService.txxx(tx_string);
                     Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -352,7 +353,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                     String tx_string;
 					tx_string = "00930202"+"02"+"FF0000";
                     //tx_string="0093010205ff0000";
-                    if(!connect_status_bit)
+                    if(!MainActivity.connect_status_bit)
                         return ;
                     mBluetoothLeService.txxx(tx_string);
                     Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -367,7 +368,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                     String tx_string;
 					tx_string = "00930202"+"06"+"FF0000";
                     //tx_string="0093010204ff0000";
-                    if(!connect_status_bit)
+                    if(!MainActivity.connect_status_bit)
                         return ;
                     mBluetoothLeService.txxx(tx_string);
                     Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -375,7 +376,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                     String tx_string;
 					tx_string = "00930202"+"06"+"000000";
                     //tx_string="0093010204000000";
-                    if(!connect_status_bit)
+                    if(!MainActivity.connect_status_bit)
                         return ;
                     mBluetoothLeService.txxx(tx_string);
                     Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -397,7 +398,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                         String tx_string;
 						tx_string = "00930202"+"07"+"FF0000";
                         //tx_string="0093010206ff0000";
-                        if(!connect_status_bit)
+                        if(!MainActivity.connect_status_bit)
                             return false;
                         mBluetoothLeService.txxx(tx_string);
                         Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -409,7 +410,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                         String tx_string;
 						tx_string = "00930202"+"07"+"000000";
                         //tx_string="0093010206000000";
-                        if(!connect_status_bit)
+                        if(!MainActivity.connect_status_bit)
                             return false;
                         mBluetoothLeService.txxx(tx_string);
                         Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
@@ -438,39 +439,19 @@ public class DelayShot_yuntai extends AppCompatActivity
             //result = mBluetoothLeService.connect(mDeviceAddress);
             //Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot result "+result);
             //if (result)
+            if (MainActivity.connect_status_bit)
             {
-                mConnected = true;
-                connect_status_bit=true;
-                //timer.cancel();
-                Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot connected!");
-                mBluetoothLeService.txxx("0003020200000000");
-				Log.e(DELAYSHOT_YUNTAI_TAG, "tx 0003020200000000");
-                delay(20);
-
+                    String tx_string = "0093050102000000";
+                    Log.e(DELAYSHOT_YUNTAI_TAG, "abc");
+                    if(MainActivity.connect_status_bit)
+                    {
+                        Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
+                        mBluetoothLeService.txxx(tx_string);
+                    }
+                    mBluetoothLeService.txxx("0003020200000000");
+                    Log.e(DELAYSHOT_YUNTAI_TAG, "tx 0003020200000000");
+                    //delay(20);
             }
-            // Automatically connects to the device upon successful start-up initialization.
-            /*
-            if (mBluetoothLeService.isconnect())
-            {
-                connect_status_bit=true;
-                mConnected = true;
-                Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot connected!");
-            }
-            else
-            {
-                boolean result;
-                result = mBluetoothLeService.connect(mDeviceAddress);
-                Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot connect "+result);
-                if (result)
-                {
-                    mConnected = true;
-                    connect_status_bit=true;
-                    timer.cancel();
-                    Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot connected!");
-                    mBluetoothLeService.txxx("0003010200000000");
-                    Log.e(DELAYSHOT_YUNTAI_TAG, "0003010200000000");
-                }
-            }*/
         }
 
         @Override
@@ -486,23 +467,20 @@ public class DelayShot_yuntai extends AppCompatActivity
             Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot BroadcastReceiver");
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                connect_status_bit=true;
                 Log.e(DELAYSHOT_YUNTAI_TAG, "ACTION_GATT_CONNECTED");
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 Log.e(DELAYSHOT_YUNTAI_TAG, "ACTION_GATT_DISCONNECTED");
                 MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
-                connect_status_bit=true;
                 mConnected = true;
                 //mBluetoothLeService.disconnect();
-                unregisterReceiver(mGattUpdateReceiver);
-                unbindService(mServiceConnection);
+                //unregisterReceiver(mGattUpdateReceiver);
+                //unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
                 timer=null;
                 Intent intent1 = new Intent(DelayShot_yuntai.this,
                         MainActivity.class);
                 startActivity(intent1);
-                connect_status_bit=false;
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 Log.e(DELAYSHOT_YUNTAI_TAG, "ACTION_GATT_SERVICES_DISCOVERED");
                 // Show all the supported services and characteristics on the user interface.
@@ -703,7 +681,7 @@ public class DelayShot_yuntai extends AppCompatActivity
             handler.sendMessage(message);
             if (!get_param_success)
             {
-                if (connect_status_bit)
+                if (MainActivity.connect_status_bit)
                 {
                     Log.e(DELAYSHOT_YUNTAI_TAG, "retry");
                     mBluetoothLeService.txxx("0003020200000000");
@@ -775,8 +753,6 @@ public class DelayShot_yuntai extends AppCompatActivity
             startActivity(intent1);
 
         }else if (id == R.id.scan) {
-            /*任意界面只要按左菜单扫描按钮就会重新扫描*/
-            //if (!connect_status_bit)
             {
                 Intent intent1 = new Intent(DelayShot_yuntai.this,
                         MainActivity.class);
@@ -823,7 +799,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot displayGattServices");
         if( gattServices.size()>0&&mBluetoothLeService.get_connected_status( gattServices )>=4 )
         {
-            if( connect_status_bit )
+            if( MainActivity.connect_status_bit )
             {
                 mConnected = true;
                 mBluetoothLeService.enable_JDY_ble(true);
@@ -867,6 +843,7 @@ public class DelayShot_yuntai extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot onResume");
+
         if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
         {
                 Log.e(DELAYSHOT_YUNTAI_TAG, "Connection Lost");
@@ -874,8 +851,8 @@ public class DelayShot_yuntai extends AppCompatActivity
                 MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
                 mConnected = false;
                 //mBluetoothLeService.disconnect(); //20181111
-                unregisterReceiver(mGattUpdateReceiver);
-                unbindService(mServiceConnection);
+                //unregisterReceiver(mGattUpdateReceiver);
+                //unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
                 timer=null;
@@ -884,20 +861,30 @@ public class DelayShot_yuntai extends AppCompatActivity
                 startActivity(intent1);
                 connect_status_bit=false;
         }
-
+        
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
-
-            //final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            //Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot onResume connect " + result);
         }
     }
-
+    
     @Override
     protected void onPause() {
-        Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot onPause");
         super.onPause();
-        //unregisterReceiver(mGattUpdateReceiver);
+        Log.e(DELAYSHOT_YUNTAI_TAG, "delayshot onPause");
+        Log.e(DELAYSHOT_YUNTAI_TAG, "aaa");
+        String tx_string = "0093050101000000";
+        if(BluetoothLeService.mConnectionState == BluetoothLeService.STATE_CONNECTED)
+        {
+            Log.e(DELAYSHOT_YUNTAI_TAG, "bbb");
+            mBluetoothLeService.txxx(tx_string);
+            Log.e(DELAYSHOT_YUNTAI_TAG, "ccc");
+            Log.e(DELAYSHOT_YUNTAI_TAG, tx_string);
+        }
+        Log.e(DELAYSHOT_YUNTAI_TAG, "ddd");
+        unbindService(mServiceConnection);
+        unregisterReceiver(mGattUpdateReceiver);
+        Log.e(DELAYSHOT_YUNTAI_TAG, "eee");
     }
 
     @Override

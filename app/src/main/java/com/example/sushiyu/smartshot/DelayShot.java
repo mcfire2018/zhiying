@@ -85,6 +85,7 @@ public class DelayShot extends AppCompatActivity
     private int baoguang_minute;
     private int baoguang_second;
     private boolean screen_toggle;
+    private Intent gattServiceIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +121,7 @@ public class DelayShot extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         boolean sg;
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        gattServiceIntent = new Intent(this, BluetoothLeService.class);
         sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         timer.schedule(task, 1000, 1000);
@@ -365,9 +366,16 @@ public class DelayShot extends AppCompatActivity
                 //timer.cancel();
                 if (MainActivity.connect_status_bit)
                 {
-                    Log.e(DELAYSHOT_TAG, "delayshot connected!");
-                    mBluetoothLeService.txxx("0003010200000000");
-                    delay(20);
+                        String tx_string = "0093050102000000";
+                        Log.e(DELAYSHOT_TAG, "abc");
+                        if(MainActivity.connect_status_bit)
+                        {
+                                Log.e(DELAYSHOT_TAG, tx_string);
+                                mBluetoothLeService.txxx(tx_string);
+                        }
+                        Log.e(DELAYSHOT_TAG, "delayshot connected!");
+                        mBluetoothLeService.txxx("0003010200000000");
+                        //delay(20);
                 }
             }
             // Automatically connects to the device upon successful start-up initialization.
@@ -416,8 +424,8 @@ public class DelayShot extends AppCompatActivity
                 connect_status_bit=true;
                 mConnected = true;
                 mBluetoothLeService.disconnect();//20181111
-                unregisterReceiver(mGattUpdateReceiver);
-                unbindService(mServiceConnection);
+                //unregisterReceiver(mGattUpdateReceiver);
+                //unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
                 timer=null;
@@ -821,8 +829,8 @@ public class DelayShot extends AppCompatActivity
                 MainActivity.device_mode = 1;/*防止重连后多个模式重复显示在左侧菜单*/
                 mConnected = false;
                 //mBluetoothLeService.disconnect(); //20181111
-                unregisterReceiver(mGattUpdateReceiver);
-                unbindService(mServiceConnection);
+                //unregisterReceiver(mGattUpdateReceiver);
+                //unbindService(mServiceConnection);
                 mBluetoothLeService = null;
                 timer.cancel();
                 timer=null;
@@ -831,6 +839,8 @@ public class DelayShot extends AppCompatActivity
                 startActivity(intent1);
                 connect_status_bit=false;
         }
+        
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
 
@@ -841,9 +851,21 @@ public class DelayShot extends AppCompatActivity
 
     @Override
     protected void onPause() {
-        Log.e(DELAYSHOT_TAG, "delayshot onPause");
         super.onPause();
-        //unregisterReceiver(mGattUpdateReceiver);
+        Log.e(DELAYSHOT_TAG, "delayshot onPause");
+        Log.e(DELAYSHOT_TAG, "aaa");
+        String tx_string = "0093050101000000";
+        if(BluetoothLeService.mConnectionState == BluetoothLeService.STATE_CONNECTED)
+        {
+            Log.e(DELAYSHOT_TAG, "bbb");
+            mBluetoothLeService.txxx(tx_string);
+            Log.e(DELAYSHOT_TAG, "ccc");
+            Log.e(DELAYSHOT_TAG, tx_string);
+        }
+        Log.e(DELAYSHOT_TAG, "ddd");
+        unbindService(mServiceConnection);
+        unregisterReceiver(mGattUpdateReceiver);
+        Log.e(DELAYSHOT_TAG, "eee");
     }
 
     @Override
