@@ -699,7 +699,8 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.e(PANORAMIC_YUNTAI_TAG, "delayshot onResume");
-        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED &&
+                        MainActivity.connect_status_bit == true)
         {
                 Log.e(PANORAMIC_YUNTAI_TAG, "Connection Lost");
                 Log.e(PANORAMIC_YUNTAI_TAG, "ACTION_GATT_DISCONNECTED");

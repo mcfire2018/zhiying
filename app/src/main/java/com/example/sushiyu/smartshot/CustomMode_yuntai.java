@@ -739,7 +739,8 @@ public class CustomMode_yuntai extends AppCompatActivity
         super.onResume();
         Log.e(CUSTOMMODE_YUNTAI_TAG, "delayshot onResume");
         Log.e(TAG, "delayshot onResume");
-        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED &&
+                        MainActivity.connect_status_bit == true)
         {
                 Log.e(CUSTOMMODE_YUNTAI_TAG, "Connection Lost");
                 Log.e(CUSTOMMODE_YUNTAI_TAG, "ACTION_GATT_DISCONNECTED");

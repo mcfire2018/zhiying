@@ -822,7 +822,8 @@ public class DelayShot extends AppCompatActivity
         super.onResume();
         Log.e(DELAYSHOT_TAG, "delayshot onResume");
 
-        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED &&
+                        MainActivity.connect_status_bit == true)
         {
                 Log.e(DELAYSHOT_TAG, "Connection Lost");
                 Log.e(DELAYSHOT_TAG, "ACTION_GATT_DISCONNECTED");

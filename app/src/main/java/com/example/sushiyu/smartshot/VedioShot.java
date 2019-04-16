@@ -931,7 +931,8 @@ public class VedioShot extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.e(VEDIOSHOT_TAG, "onResume");
-        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED)
+        if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED &&
+                        MainActivity.connect_status_bit == true)
         {
                 Log.e(VEDIOSHOT_TAG, "Connection Lost");
                 Log.e(VEDIOSHOT_TAG, "ACTION_GATT_DISCONNECTED");

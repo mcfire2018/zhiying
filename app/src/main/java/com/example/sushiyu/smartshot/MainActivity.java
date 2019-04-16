@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity
     private boolean scanning = false;
     private Intent gattServiceIntent;
     private static boolean gatt_service_discovered = false;
+    public static boolean offline_mode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,12 +259,13 @@ public class MainActivity extends AppCompatActivity
                         Log.e(MAINACTIVITY_TAG, "device == null");
                         return;
                     }
-                    Toast.makeText(MainActivity.this, R.string.Connecting, Toast.LENGTH_SHORT).show();
 
                     mScanning = false;
                     scanLeDevice(false);
                     mConnecting = true;
 
+                    scanning_tv.setText(R.string.Connecting);
+                    //Toast.makeText(MainActivity.this, R.string.Connecting, Toast.LENGTH_SHORT).show();
                    /*
                     Log.e(MAINACTIVITY_TAG, device_select.getName());
                     Log.e(MAINACTIVITY_TAG, device_select.getAddress());
@@ -442,6 +444,7 @@ public class MainActivity extends AppCompatActivity
                     return;
                 }
             }
+            scanning_tv.setText("");
             Toast.makeText(MainActivity.this, R.string.Connected, Toast.LENGTH_SHORT).show();
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.openDrawer(GravityCompat.START);
@@ -679,6 +682,7 @@ public class MainActivity extends AppCompatActivity
         //if (abpoint_ok == 0)
         //if (wait_receive_mcu_msg_to <= 25 && wait_receive_mcu_msg_to >=19)
         if (id == R.id.scan) {
+            Log.e(MAINACTIVITY_TAG, "button scan");
             /*任意界面只要按左菜单扫描按钮就会重新扫描*/
             //if (!connect_status_bit)
             {
@@ -691,12 +695,16 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent1);
             }
         }
-        if (wait_receive_mcu_msg_to != 26)
+        if (wait_receive_mcu_msg_to < 26 && gatt_service_discovered == false)
         {
             /*2018.11.04开始，左菜单按键不需要连接状态下才能按下*/
             return true;
         }
         if (id == R.id.vedio_shoot) {
+            Log.e(MAINACTIVITY_TAG, "vedio_shoot");
+            if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
+                offline_mode = true; 
+            }
             timer.cancel();
             //timer_wait_mcu.cancel();
             shoot_mode = 0;
@@ -727,6 +735,10 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.delay_shoot) {
+            Log.e(MAINACTIVITY_TAG, "delay_shoot");
+            if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
+                offline_mode = true; 
+            }
             timer.cancel();
             shoot_mode = 1;
             if (device_mode == 1)
@@ -754,6 +766,10 @@ public class MainActivity extends AppCompatActivity
 
             }
         } else if (id == R.id.abpoint) {
+            if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
+                offline_mode = true; 
+            }
+            Log.e(MAINACTIVITY_TAG, "abpoint");
             timer.cancel();
             shoot_mode = 2;
             Intent intent1 = new Intent(MainActivity.this,
@@ -765,6 +781,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent1);
 
         } else if (id == btn_quanjing) {
+            if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
+                offline_mode = true; 
+            }
             timer.cancel();
             Log.e(MAINACTIVITY_TAG, "btn_quanjing");
             Intent intent1 = new Intent(MainActivity.this,
@@ -776,6 +795,9 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent1);
 
         }else if (id == btn_zidingyi) {
+            if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
+                offline_mode = true; 
+            }
             timer.cancel();
             shoot_mode = 2;
             Intent intent1 = new Intent(MainActivity.this,
