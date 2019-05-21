@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                 //判断是否需要向用户解释为什么需要申请该权限
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    Toast.makeText(this, "自Android 6.0开始需要打开位置权限才可以搜索到Ble设备", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.position_permit_info, Toast.LENGTH_LONG).show();
                 }
                 //请求权限
                 ActivityCompat.requestPermissions(this,

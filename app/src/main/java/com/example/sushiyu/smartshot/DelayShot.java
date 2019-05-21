@@ -223,7 +223,7 @@ public class DelayShot extends AppCompatActivity
                     }
                 });
                 AlertDialog dialog = new AlertDialog.Builder(DelayShot.this)
-                        .setTitle("拍摄张数")
+                        .setTitle(R.string.photo_num)
                         .setView(EtShotTimes)
                         //.setView(new EditText(DelayShot.this))
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {

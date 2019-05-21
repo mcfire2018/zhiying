@@ -31,9 +31,9 @@ public class DateTimepickerDialog extends AlertDialog  {
                 Second = second;
             }  
         });
-		setTitle("请选择");
+		setTitle(R.string.please_select);
 
-		setButton(DialogInterface.BUTTON_POSITIVE,"确定", new DialogInterface.OnClickListener() {
+		setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
@@ -45,7 +45,7 @@ public class DateTimepickerDialog extends AlertDialog  {
 					}
 				}
 			}); 
-		setButton(DialogInterface.BUTTON_NEGATIVE,"取消", (OnClickListener) null); 
+		setButton(DialogInterface.BUTTON_NEGATIVE,"Exit", (OnClickListener) null);
 		setCanceledOnTouchOutside(false);//点击对话框外无法关闭对话框
 	}  
 	/* 
