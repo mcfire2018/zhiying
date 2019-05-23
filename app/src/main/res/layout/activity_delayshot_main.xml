@@ -200,7 +200,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="0dp"
             android:checked="false"
             android:switchMinWidth="80dp"
             android:switchPadding="10dp"
@@ -266,19 +266,18 @@
                 android:id="@+id/shot_times_remain_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
                 android:text="@string/delayshot_shot_remain"
                 android:textSize="12sp" />
-
 
 
             <TextView
                 android:id="@+id/shot_times_remain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
                 android:text="@string/delayshot_shot_remain_default"
                 android:textSize="12sp" />
 

@@ -40,13 +40,13 @@
     <string name="delayshot_stop">Stop</string>
     <string name="delayshot_shot_time_last">shot time last</string>
     <string name="delayshot_shottime_cnt">Shoot counts</string>
-    <string name="title_activity_vedio_shot">Video Shoot</string>
+    <string name="title_activity_vedio_shot">Video</string>
     <string name="exit_app">Exit</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_vedio__shot">Vedio_Shot</string>
-    <string name="title_activity_delay_shot">Time-lapse Shoot</string>
+    <string name="title_activity_delay_shot">Time-lapse</string>
     <string name="language">Language</string>
     <string name="Reverse">Reverse</string>
     <string name="Manual">Manual</string>
