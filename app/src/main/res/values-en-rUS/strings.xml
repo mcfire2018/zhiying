@@ -28,12 +28,12 @@
     <string name="delayshot_hour">:</string>
     <string name="delayshot_minute">:</string>
     <string name="delayshot_dingdian">Fixed Shoot</string>
-    <string name="delayshot_shot_time">Duration</string>
+    <string name="delayshot_shot_time">Shoot Length</string>
     <string name="delayshot_shot_time_default">00:00:00</string>
-    <string name="delayshot_shot_remain">Shoot counts</string>
+    <string name="delayshot_shot_remain">PIX-AMT</string>
     <string name="delayshot_shot_remain_default">100</string>
     <string name="delayshot_second"></string>
-    <string name="delayshot_shottime_total">PhotoNum</string>
+    <string name="delayshot_shottime_total">PIX-AMT</string>
     <string name="delayshot_baoguang_time">Shutter</string>
     <string name="delayshot_left">L</string>
     <string name="delayshot_right">R</string>
@@ -49,7 +49,7 @@
     <string name="title_activity_delay_shot">Time-lapse</string>
     <string name="language">Language</string>
     <string name="Reverse">Reverse</string>
-    <string name="Manual">Manual</string>
+    <string name="Manual">Shutter Test</string>
     <string name="Speed">Speed</string>
     <string name="jiaodu">Angle：</string>
     <string name="Close">OFF</string>
