@@ -226,12 +226,12 @@ public class DelayShot extends AppCompatActivity
                         .setTitle(R.string.photo_num)
                         .setView(EtShotTimes)
                         //.setView(new EditText(DelayShot.this))
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.e(DELAYSHOT_TAG, "TvShootTimes onClick");
