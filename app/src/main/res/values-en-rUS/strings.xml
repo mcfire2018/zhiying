@@ -60,12 +60,12 @@
     <string name="abpoint_reset">Reset</string>
     <string name="Connecting">Connecting</string>
     <string name="Connected">Connected</string>
-    <string name="NoConnecting">Not Connected</string>
+    <string name="NoConnecting">Not Connected</string>s
     <string name="Scan">Scan</string>
     <string name="Scanning">Scanning...</string>
     <string name="please_select">Select</string>
-    <string name="confirm">confirm</string>
-    <string name="cancel">cancel</string>
+    <string name="confirm">OK</string>
+    <string name="cancel">Exit</string>
     <string name="position_permit_info">In order to scan the device, you should open the location switch since Android6.0</string>
     <string name="photo_num">Photo Num</string>
 </resources>
