@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartShot</string>
+    <string name="abpoint_notification_left">
+        Press the left or right button to move the slider to the far left and press ok to determine the A-point of the slider</string>
+    <string name="abpoint_notification_right">
+        Press the left or right button to move the slider to the far Right and press ok key to determine the B-point of the slider</string>
+    <string name="abpoint_notification_error">
+        ABPoint Set Failed, Please Press The Reset Button</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_slider">滑轨控制</string>
+    <string name="action_delay_shot">Delay Shoot</string>
+
+    <string name="title_activity_abpoint">AB Point Set</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+    <string name="a_point_setting">A Point Set</string>
+    <string name="b_point_setting">B Point Set</string>
+    <!-- Menu items -->
+    <string name="delayshot_interval">Frames</string>
+    <string name="delayshot_hour">:</string>
+    <string name="delayshot_minute">:</string>
+    <string name="delayshot_dingdian">Fixed Shoot</string>
+    <string name="delayshot_shot_time">Shoot Length</string>
+    <string name="delayshot_shot_time_default">00:00:00</string>
+    <string name="delayshot_shot_remain">PIX-AMT</string>
+    <string name="delayshot_shot_remain_default">100</string>
+    <string name="delayshot_second"></string>
+    <string name="delayshot_shottime_total">PIX-AMT</string>
+    <string name="delayshot_baoguang_time">Shutter</string>
+    <string name="delayshot_left">L</string>
+    <string name="delayshot_right">R</string>
+    <string name="delayshot_stop">Stop</string>
+    <string name="delayshot_shot_time_last">shot time last</string>
+    <string name="delayshot_shottime_cnt">Shoot counts</string>
+    <string name="title_activity_vedio_shot">Video</string>
+    <string name="exit_app">Exit</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_vedio__shot">Vedio_Shot</string>
+    <string name="title_activity_delay_shot">Time-lapse</string>
+    <string name="language">Language</string>
+    <string name="Reverse">Reverse</string>
+    <string name="Manual">Shutter Test</string>
+    <string name="Speed">Speed</string>
+    <string name="jiaodu">Angle：</string>
+    <string name="Close">OFF</string>
+    <string name="Open">ON</string>
+    <string name="Contact">Contact Us</string>
+    <string name="software_upgrade">software upgrade</string>
+    <string name="support">support：596400303@qq.com</string>
+    <string name="abpoint_reset">Reset</string>
+    <string name="Connecting">Connecting</string>
+    <string name="Connected">Connected</string>
+    <string name="NoConnecting">Not Connected</string>s
+    <string name="Scan">Scan</string>
+    <string name="Scanning">Scanning...</string>
+    <string name="please_select">Select</string>
+    <string name="confirm">OK</string>
+    <string name="cancel">Exit</string>
+    <string name="position_permit_info">In order to scan the device, you should open the location switch since Android6.0</string>
+    <string name="photo_num">Photo Num</string>
+</resources>
