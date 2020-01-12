@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "com.example.sushiyu.smartshot"
+        applicationId "com.zhiying.sushiyu.smartshot"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
