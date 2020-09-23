@@ -53,6 +53,7 @@ public class DelayShot_yuntai extends AppCompatActivity
     public static int max_shot_times;/*received from mcu*/
     private String mDeviceName;
     private String mDeviceAddress;
+    private int jiaodu_or_changdu;
     public BluetoothLeService mBluetoothLeService;
     private Intent connect_intent;
     private TextView mConnectionState;
@@ -65,6 +66,7 @@ public class DelayShot_yuntai extends AppCompatActivity
     private TextView TvBaoguangTime;
     private TextView TvShootTimes;
     private TextView TvJiaodu;
+    private TextView TvJiaodu_title;
     private int shoot_times;
     private int jiaodu_num;
     private TextView TvShottimeTotal;
@@ -96,6 +98,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+        jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",2);
         /*if (DelayShot.max_shot_times == 0)
         {
             DelayShot.max_shot_times = 100;
@@ -121,17 +124,20 @@ public class DelayShot_yuntai extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().removeItem(R.id.abpoint);
+        navigationView.getMenu().removeItem(R.id.vedio_shoot);
         navigationView.getMenu().add(MainActivity.btn_quanjing, MainActivity.btn_quanjing,
-                MainActivity.btn_quanjing, "全景拍摄");
-        navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
-                MainActivity.btn_zidingyi, "自定义拍摄");
+                MainActivity.btn_quanjing, "视频拍摄");
+        //navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
+        //        MainActivity.btn_zidingyi, "自定义拍摄");
         boolean sg;
         gattServiceIntent = new Intent(this, BluetoothLeService.class);
         sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         timer.schedule(task, 1000, 1000);
 
-
+        TvJiaodu_title = (TextView) findViewById(R.id.delayshoot_jiaodu_title);
+        if (jiaodu_or_changdu == 4)
+            TvJiaodu_title.setText(R.string.jiaodutitle);
         TvJiaodu = (TextView) findViewById(R.id.delayshoot_jiaodu);
         TvJiaodu.setText("00");
         TvJiaodu.setOnClickListener(new View.OnClickListener() {
@@ -155,9 +161,9 @@ public class DelayShot_yuntai extends AppCompatActivity
                             return;
                         }
                         jiaodu_num = Integer.valueOf(editable.toString(),10);
-                        if (jiaodu_num > 720)
+                        if (jiaodu_num > 65535)
                         {
-                            jiaodu_num = 720;
+                            jiaodu_num = 65535;
                             EtJiaodu.setText(""+jiaodu_num);
                         }
                         Log.e(DELAYSHOT_YUNTAI_TAG, "EtJiaodu afterTextChanged "+jiaodu_num);
@@ -497,7 +503,7 @@ public class DelayShot_yuntai extends AppCompatActivity
                 if (str.substring(0,4).equals("0309"))
                 {
                     Log.e(DELAYSHOT_YUNTAI_TAG, "Shoot Count(0309) Header Check OK");
-					if (str.length() != 14)
+					if (str.length() != 14 && str.length() != 16)
 					{
                         Log.e(DELAYSHOT_YUNTAI_TAG, "Shoot Count(0309) PayLoad Length Check ERR("+str.length()+")");
 						return;

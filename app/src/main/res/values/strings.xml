@@ -47,7 +47,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_vedio__shot">Vedio_Shot</string>
     <string name="title_activity_delay_shot">延时拍摄</string>
-    <string name="title_activity_panromic_shoot">全景拍摄</string>
+    <string name="title_activity_panromic_shoot">视频拍摄</string>
     <string name="title_activity_custommode_shoot">自定义拍摄</string>
     <string name="language">语言</string>
     <string name="Reverse">自动往返</string>
@@ -79,6 +79,7 @@
     <string name="cancel">取消</string>
     <string name="position_permit_info">自Android 6.0开始需要打开位置权限才可以搜索到Ble设备</string>
     <string name="photo_num">拍摄张数</string>
+    <string name="jiaodutitle">长度</string>
 
 
 

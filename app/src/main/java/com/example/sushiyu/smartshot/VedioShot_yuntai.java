@@ -104,10 +104,11 @@ public class VedioShot_yuntai extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().removeItem(R.id.abpoint);
+        navigationView.getMenu().removeItem(R.id.vedio_shoot);
         navigationView.getMenu().add(MainActivity.btn_quanjing, MainActivity.btn_quanjing,
-                MainActivity.btn_quanjing, "全景拍摄");
-        navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
-                MainActivity.btn_zidingyi, "自定义拍摄");
+                MainActivity.btn_quanjing, "视频拍摄");
+        //navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
+        //        MainActivity.btn_zidingyi, "自定义拍摄");
         mHandler = new Handler();
         timer.schedule(task, 1000, 1000);
         boolean sg;

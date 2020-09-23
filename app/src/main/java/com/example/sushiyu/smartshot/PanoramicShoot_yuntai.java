@@ -67,6 +67,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     private Switch switch_direction;
     private String mDeviceName;
     private String mDeviceAddress;
+    private TextView TvJiaodu_title;
 
 
     private ImageButton panoramic_btn_start;
@@ -77,6 +78,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     private int yunxing_minute;
     private int yunxing_second;
     private boolean screen_toggle;
+    private int jiaodu_or_changdu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+        jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",2);
         Calendar c = Calendar.getInstance();
 
         String month = Integer.toString(c.get(Calendar.MONTH));
@@ -106,14 +109,19 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         Log.e(PANORAMIC_YUNTAI_TAG, "FFF");
         navigationView.getMenu().removeItem(R.id.abpoint);
+        navigationView.getMenu().removeItem(R.id.vedio_shoot);
         navigationView.getMenu().add(MainActivity.btn_quanjing, MainActivity.btn_quanjing,
-                MainActivity.btn_quanjing, "全景拍摄");
-        navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
-                MainActivity.btn_zidingyi, "自定义拍摄");
+                MainActivity.btn_quanjing, "视频拍摄");
+        //navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
+        //        MainActivity.btn_zidingyi, "自定义拍摄");
         boolean sg;
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         sg = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         timer.schedule(task, 1000, 1000);
+
+        TvJiaodu_title = (TextView) findViewById(R.id.panoramic_jiaodu_title);
+        if (jiaodu_or_changdu == 4)
+            TvJiaodu_title.setText(R.string.jiaodutitle);
 
         TvJiaodu = (TextView) findViewById(R.id.panoramic_jiaodu);
         TvJiaodu.setText("00");
@@ -138,9 +146,9 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                             return;
                         }
                         jiaodu_num = Integer.valueOf(editable.toString(),10);
-                        if (jiaodu_num > 720)
+                        if (jiaodu_num > 65535)
                         {
-                            jiaodu_num = 720;
+                            jiaodu_num = 65535;
                             EtJiaodu.setText(""+jiaodu_num);
                         }
                         Log.e(PANORAMIC_YUNTAI_TAG, "EtJiaodu afterTextChanged "+jiaodu_num);

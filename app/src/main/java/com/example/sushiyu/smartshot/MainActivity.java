@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     public static final String MAINACTIVITY_TAG = "mcfire_main";
     public static int device_mode = 1;  //1-->huagui, 2-->yuntai, 3-->xiaoche
+    public static final String JIAODU_OR_CHANGDU_FLAG = "JIAODU_OR_CHANGDU_FLAG";
+    public static int jiaodu_or_changdu_flag = 2;//02->角度,04->长度
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothAdapter mBluetoothAdapter;
@@ -317,13 +319,15 @@ public class MainActivity extends AppCompatActivity
 
         if(device_mode == 2)
         {
+            Log.e("20200919", "(device_mode 2!)");
             navigationView.getMenu().removeItem(R.id.abpoint);
-            navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "全景拍摄");
-            navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
+            navigationView.getMenu().removeItem(R.id.vedio_shoot);
+            navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+            //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
             navigationView.getMenu().equals(btn_quanjing);
 
         }
-
+        Log.e(MAINACTIVITY_TAG, "(device_mode 1!)");
         if (mBluetoothLeService != null)
         {
             Log.e(MAINACTIVITY_TAG, "(mBluetoothLeService != null)");
@@ -540,25 +544,68 @@ public class MainActivity extends AppCompatActivity
                     }
                     mConnecting = false;
                     Log.e(MAINACTIVITY_TAG, "030B00");
+
+                    if (!connect_status_bit)
+                    {
+                        Toast.makeText(MainActivity.this, R.string.Connected, Toast.LENGTH_SHORT).show();
+                    }
                     connect_status_bit=true;
-                    Toast.makeText(MainActivity.this, R.string.Connected, Toast.LENGTH_SHORT).show();
+
                     timer.cancel();
                     timer_wait_mcu.cancel();
                     get_param_success = true;
-                    device_mode = 1;
-                    if(str.substring(6,8).equals("02"))
+                    //device_mode = 1;
+                    if(str.substring(6,8).equals("02") && (device_mode != 2))
                     {
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         navigationView.getMenu().removeItem(R.id.abpoint);
-                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "全景拍摄");
-                        navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
+                        navigationView.getMenu().removeItem(R.id.vedio_shoot);
+                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+                        //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
                         device_mode = 2;
+                        jiaodu_or_changdu_flag = 2;
+                        Log.e("20200919", "str.substring(6,8).equals, device_mode = 2");
+                    }
+                    if(str.substring(6,8).equals("04") && (device_mode != 2))
+                    {
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        navigationView.getMenu().removeItem(R.id.abpoint);
+                        navigationView.getMenu().removeItem(R.id.vedio_shoot);
+                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+                        //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
+                        device_mode = 2;
+                        jiaodu_or_changdu_flag = 4;
                     }
                     //device_mode = 2;
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.openDrawer(GravityCompat.START);
                     abpoint_ok = 1;
 
+                }
+                else if (str.substring(0,8).equals("00030202") )
+                {
+                    Intent intent1 = new Intent(MainActivity.this,
+                            DelayShot_yuntai.class);
+                    intent1.putExtra(MainActivity.EXTRAS_DEVICE_NAME,
+                            mDeviceName);
+                    intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
+                            mDeviceAddress);
+                    intent1.putExtra(MainActivity.JIAODU_OR_CHANGDU_FLAG,
+                            jiaodu_or_changdu_flag);
+
+                    startActivity(intent1);
+                }
+                else if (str.substring(0,8).equals("00030203") )
+                {
+                    Intent intent1 = new Intent(MainActivity.this,
+                            PanoramicShoot_yuntai.class);
+                    intent1.putExtra(MainActivity.EXTRAS_DEVICE_NAME,
+                            mDeviceName);
+                    intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
+                            mDeviceAddress);
+                    startActivity(intent1);
+                    intent1.putExtra(MainActivity.JIAODU_OR_CHANGDU_FLAG,
+                            jiaodu_or_changdu_flag);
                 }
                 /*
                 Log.e(MAINACTIVITY_TAG, "shoot_mode = "+shoot_mode);
@@ -758,7 +805,10 @@ public class MainActivity extends AppCompatActivity
                 intent1.putExtra(MainActivity.EXTRAS_DEVICE_NAME,
                         mDeviceName);
                 intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
-                        mDeviceAddress);
+                    mDeviceAddress);
+                intent1.putExtra(MainActivity.JIAODU_OR_CHANGDU_FLAG,
+                        jiaodu_or_changdu_flag);
+
                 startActivity(intent1);
             }
             else
@@ -793,6 +843,8 @@ public class MainActivity extends AppCompatActivity
             intent1.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS,
                     mDeviceAddress);
             startActivity(intent1);
+            intent1.putExtra(MainActivity.JIAODU_OR_CHANGDU_FLAG,
+                    jiaodu_or_changdu_flag);
 
         }else if (id == btn_zidingyi) {
             if (BluetoothLeService.mConnectionState == BluetoothLeService.STATE_DISCONNECTED){
