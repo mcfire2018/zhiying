@@ -126,7 +126,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         navigationView.getMenu().removeItem(R.id.abpoint);
         navigationView.getMenu().removeItem(R.id.vedio_shoot);
         navigationView.getMenu().add(MainActivity.btn_quanjing, MainActivity.btn_quanjing,
-                MainActivity.btn_quanjing, "视频拍摄");
+                MainActivity.btn_quanjing,R.string.title_activity_panromic_shoot);
         //navigationView.getMenu().add(MainActivity.btn_zidingyi, MainActivity.btn_zidingyi,
         //        MainActivity.btn_zidingyi, "自定义拍摄");
         boolean sg;

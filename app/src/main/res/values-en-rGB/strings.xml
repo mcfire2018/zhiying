@@ -51,7 +51,7 @@
     <string name="Reverse">Reverse</string>
     <string name="Manual">Shutter Test</string>
     <string name="Speed">Speed</string>
-    <string name="jiaodu">Angle：</string>
+    <string name="jiaodu">Angle</string>
     <string name="Close">OFF</string>
     <string name="Open">ON</string>
     <string name="Contact">Contact Us</string>
@@ -69,4 +69,6 @@
     <string name="position_permit_info">In order to scan the device, you should open the location switch since Android6.0</string>
     <string name="photo_num">Photo Num</string>
     <string name="jiaodutitle">Length</string>
+    <string name="panoramic_shoot_times">Time</string>
+    <string name="title_activity_panromic_shoot">Vedio</string>
 </resources>

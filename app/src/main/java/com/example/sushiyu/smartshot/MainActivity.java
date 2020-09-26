@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
             Log.e("20200919", "(device_mode 2!)");
             navigationView.getMenu().removeItem(R.id.abpoint);
             navigationView.getMenu().removeItem(R.id.vedio_shoot);
-            navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+            navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, R.string.title_activity_vedio_shot);
             //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
             navigationView.getMenu().equals(btn_quanjing);
 
@@ -560,7 +560,7 @@ public class MainActivity extends AppCompatActivity
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         navigationView.getMenu().removeItem(R.id.abpoint);
                         navigationView.getMenu().removeItem(R.id.vedio_shoot);
-                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, R.string.title_activity_vedio_shot);
                         //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
                         device_mode = 2;
                         jiaodu_or_changdu_flag = 2;
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         navigationView.getMenu().removeItem(R.id.abpoint);
                         navigationView.getMenu().removeItem(R.id.vedio_shoot);
-                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, "视频拍摄");
+                        navigationView.getMenu().add(btn_quanjing, btn_quanjing, btn_quanjing, R.string.title_activity_vedio_shot);
                         //navigationView.getMenu().add(btn_zidingyi, btn_zidingyi, btn_zidingyi, "自定义拍摄");
                         device_mode = 2;
                         jiaodu_or_changdu_flag = 4;
