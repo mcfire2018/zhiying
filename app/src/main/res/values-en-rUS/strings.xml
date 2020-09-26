@@ -68,5 +68,5 @@
     <string name="cancel">Exit</string>
     <string name="position_permit_info">In order to scan the device, you should open the location switch since Android6.0</string>
     <string name="photo_num">Photo Num</string>
-    <string name="jiaodutitle">Distance</string>
+    <string name="jiaodutitle">Length</string>
 </resources>

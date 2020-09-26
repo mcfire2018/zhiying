@@ -65,6 +65,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     private TextView TvShottimeTotal;
     private TextView TvRemainTimes;
     private Switch switch_direction;
+    private boolean switch_direction_sync_with_mcu = false; //no tx to mcu 20200926
     private String mDeviceName;
     private String mDeviceAddress;
     private TextView TvJiaodu_title;
@@ -78,7 +79,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
     private int yunxing_minute;
     private int yunxing_second;
     private boolean screen_toggle;
-    private int jiaodu_or_changdu;
+    //private int jiaodu_or_changdu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,8 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-        jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",2);
+        //jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",4);
+        //Log.e(PANORAMIC_YUNTAI_TAG, "get jiaodu or changdu " +jiaodu_or_changdu);
         Calendar c = Calendar.getInstance();
 
         String month = Integer.toString(c.get(Calendar.MONTH));
@@ -120,8 +122,13 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
         timer.schedule(task, 1000, 1000);
 
         TvJiaodu_title = (TextView) findViewById(R.id.panoramic_jiaodu_title);
-        if (jiaodu_or_changdu == 4)
+        if (MainActivity.jiaodu_or_changdu_flag == 4)
+        {
             TvJiaodu_title.setText(R.string.jiaodutitle);
+            Log.e(PANORAMIC_YUNTAI_TAG, "jiaodu");
+        }
+        else
+            Log.e(PANORAMIC_YUNTAI_TAG, "changdu");
 
         TvJiaodu = (TextView) findViewById(R.id.panoramic_jiaodu);
         TvJiaodu.setText("00");
@@ -235,14 +242,26 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                     tx_string="00930203"+"03"+"00"+"0000";
                     if(!connect_status_bit)
                         return ;
-                    mBluetoothLeService.txxx(tx_string);
+                    if (switch_direction_sync_with_mcu == false)
+                    {
+                        Log.e(PANORAMIC_YUNTAI_TAG, "switch direction tx"+tx_string);
+                        mBluetoothLeService.txxx(tx_string);
+                    }
+                    else
+                        Log.e(PANORAMIC_YUNTAI_TAG, "switch direction but no txxx");
                     Log.e(PANORAMIC_YUNTAI_TAG, tx_string);
                 }else {
                     String tx_string;
                     tx_string="00930203"+"03"+"FF"+"0000";
                     if(!connect_status_bit)
                         return ;
-                    mBluetoothLeService.txxx(tx_string);
+                    if (switch_direction_sync_with_mcu == false)
+                    {
+                        Log.e(PANORAMIC_YUNTAI_TAG, "switch direction tx"+tx_string);
+                        mBluetoothLeService.txxx(tx_string);
+                    }
+                    else
+                        Log.e(PANORAMIC_YUNTAI_TAG, "switch direction but no txxx");
                     Log.e(PANORAMIC_YUNTAI_TAG, tx_string);
                 }
             }
@@ -423,23 +442,29 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                                     String.format("%02d", yunxing_second));
 
                     /*direction*/
+
                     tmp_str = str.substring(14,16);
+
                     if (tmp_str.equals("00"))
                     {
                         Log.e(PANORAMIC_YUNTAI_TAG, "00");
+                        switch_direction_sync_with_mcu = true;
                         switch_direction.setChecked(false);
+                        switch_direction_sync_with_mcu = false;
                     }
                     else if(tmp_str.equals("FF"))
                     {
                         Log.e(PANORAMIC_YUNTAI_TAG, "FF");
+                        switch_direction_sync_with_mcu = true;
                         switch_direction.setChecked(true);
+                        switch_direction_sync_with_mcu = false;
                     }
                     else
                     {
                         Log.e(PANORAMIC_YUNTAI_TAG, "fuck");
                     }
                     /*start or stop*/
-                    tmp_str = str.substring(14,16);
+                    tmp_str = str.substring(16,18);
 
                     if (tmp_str.equals("FF"))
                     {

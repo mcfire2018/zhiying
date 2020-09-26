@@ -53,7 +53,7 @@ public class DelayShot_yuntai extends AppCompatActivity
     public static int max_shot_times;/*received from mcu*/
     private String mDeviceName;
     private String mDeviceAddress;
-    private int jiaodu_or_changdu;
+    //private int jiaodu_or_changdu;
     public BluetoothLeService mBluetoothLeService;
     private Intent connect_intent;
     private TextView mConnectionState;
@@ -98,7 +98,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-        jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",2);
+        //jiaodu_or_changdu = intent.getIntExtra("JIAODU_OR_CHANGDU_FLAG",4);
         /*if (DelayShot.max_shot_times == 0)
         {
             DelayShot.max_shot_times = 100;
@@ -136,7 +136,7 @@ public class DelayShot_yuntai extends AppCompatActivity
         timer.schedule(task, 1000, 1000);
 
         TvJiaodu_title = (TextView) findViewById(R.id.delayshoot_jiaodu_title);
-        if (jiaodu_or_changdu == 4)
+        if (MainActivity.jiaodu_or_changdu_flag == 4)
             TvJiaodu_title.setText(R.string.jiaodutitle);
         TvJiaodu = (TextView) findViewById(R.id.delayshoot_jiaodu);
         TvJiaodu.setText("00");
