@@ -162,7 +162,7 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                     }
                 });
                 AlertDialog dialog = new AlertDialog.Builder(PanoramicShoot_yuntai.this)
-                        .setTitle("请输入角度")
+                        .setTitle("")
                         .setView(EtJiaodu)
                         //.setView(new EditText(DelayShot.this))
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
