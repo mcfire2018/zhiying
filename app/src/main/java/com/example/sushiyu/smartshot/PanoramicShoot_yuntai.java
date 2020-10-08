@@ -165,12 +165,12 @@ public class PanoramicShoot_yuntai extends AppCompatActivity
                         .setTitle("")
                         .setView(EtJiaodu)
                         //.setView(new EditText(DelayShot.this))
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.e(PANORAMIC_YUNTAI_TAG, "TvJiaodu onClick");
