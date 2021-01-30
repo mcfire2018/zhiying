@@ -11,7 +11,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
     <string name="action_slider">滑轨控制</string>
-    <string name="action_delay_shot">Delay Shoot</string>
+    <string name="action_delay_shot">Delay Shot</string>
 
     <string name="title_activity_abpoint">AB Point Set</string>
     <string name="dummy_button">Dummy Button</string>
@@ -24,23 +24,23 @@
     <string name="a_point_setting">A Point Set</string>
     <string name="b_point_setting">B Point Set</string>
     <!-- Menu items -->
-    <string name="delayshot_interval">Frames</string>
+    <string name="delayshot_interval">Interval</string>
     <string name="delayshot_hour">:</string>
     <string name="delayshot_minute">:</string>
-    <string name="delayshot_dingdian">Fixed Shoot</string>
-    <string name="delayshot_shot_time">Shoot Length</string>
+    <string name="delayshot_dingdian">Fixed shot</string>
+    <string name="delayshot_shot_time">Shot Length</string>
     <string name="delayshot_shot_time_default">00:00:00</string>
-    <string name="delayshot_shot_remain">PIX-AMT</string>
+    <string name="delayshot_shot_remain">Frames</string>
     <string name="delayshot_shot_remain_default">100</string>
     <string name="delayshot_second"></string>
-    <string name="delayshot_shottime_total">PIX-AMT</string>
+    <string name="delayshot_shottime_total">Frames</string>
     <string name="delayshot_baoguang_time">Shutter</string>
     <string name="delayshot_left">L</string>
     <string name="delayshot_right">R</string>
     <string name="delayshot_stop">Stop</string>
     <string name="delayshot_shot_time_last">shot time last</string>
-    <string name="delayshot_shottime_cnt">Shoot counts</string>
-    <string name="title_activity_vedio_shot">Video</string>
+    <string name="delayshot_shottime_cnt">Shot counts</string>
+    <string name="title_activity_vedio_shot">Live video</string>
     <string name="exit_app">Exit</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -51,7 +51,7 @@
     <string name="Reverse">Reverse</string>
     <string name="Manual">Shutter Test</string>
     <string name="Speed">Speed</string>
-    <string name="jiaodu">Angle：</string>
+    <string name="jiaodu">Angle</string>
     <string name="Close">OFF</string>
     <string name="Open">ON</string>
     <string name="Contact">Contact Us</string>
@@ -68,4 +68,7 @@
     <string name="cancel">Exit</string>
     <string name="position_permit_info">In order to scan the device, you should open the location switch since Android6.0</string>
     <string name="photo_num">Photo Num</string>
+    <string name="jiaodutitle">Length(cm)</string>
+    <string name="panoramic_shoot_times">Duration time</string>
+    <string name="title_activity_panromic_shoot">Live video</string>
 </resources>
